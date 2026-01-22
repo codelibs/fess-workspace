@@ -1,0 +1,31 @@
+name: core
+description: "Core Fess development set"
+
+defaults:
+  # SSH (recommended for development)
+  remote_base: git@github.com:codelibs
+  # HTTPS alternative:
+  # remote_base: https://github.com/codelibs
+  branch: master
+
+repositories:
+  - name: fess-parent
+    branch: main
+    build_order: 1
+
+  - name: fess-crawler
+    build_order: 2
+
+  - name: fess-crawler-playwright
+    branch: main
+    build_order: 3
+
+  - name: fess-suggest
+    build_order: 4
+
+  - name: fess
+    build_order: 5
+
+  - name: fess-docs
+    build_order: 99
+    skip_build: true

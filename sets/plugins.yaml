@@ -1,0 +1,61 @@
+name: plugins
+description: "Plugin development set (includes core)"
+
+defaults:
+  # SSH (recommended for development)
+  remote_base: git@github.com:codelibs
+  # HTTPS alternative:
+  # remote_base: https://github.com/codelibs
+  branch: master
+
+includes:
+  - core.yaml
+
+repositories:
+  # Data Store plugins
+  - name: fess-ds-db
+    build_order: 10
+
+  - name: fess-ds-csv
+    build_order: 10
+
+  - name: fess-ds-json
+    build_order: 10
+
+  - name: fess-ds-office365
+    build_order: 10
+
+  - name: fess-ds-salesforce
+    build_order: 10
+
+  - name: fess-ds-slack
+    build_order: 10
+
+  - name: fess-ds-box
+    build_order: 10
+
+  - name: fess-ds-dropbox
+    build_order: 10
+
+  - name: fess-ds-s3
+    build_order: 10
+
+  - name: fess-ds-gsuite
+    build_order: 10
+
+  - name: fess-ds-atlassian
+    build_order: 10
+
+  - name: fess-ds-gitbucket
+    build_order: 10
+
+  - name: fess-ds-git
+    build_order: 10
+
+  # Theme plugins
+  - name: fess-theme-simple
+    build_order: 20
+
+  # Webapp plugins
+  - name: fess-webapp-semantic-search
+    build_order: 20

@@ -1,0 +1,42 @@
+# Custom set definition template
+# Copy this file to custom.yaml and modify as needed
+#
+# Usage:
+#   cp sets/custom.yaml.example sets/custom.yaml
+#   # Edit sets/custom.yaml
+#   ./scripts/clone.sh custom
+
+name: custom
+description: "Custom development set"
+
+defaults:
+  # SSH (recommended for development)
+  remote_base: git@github.com:codelibs
+  # HTTPS alternative (uncomment and comment out SSH):
+  # remote_base: https://github.com/codelibs
+  branch: master
+
+# Include other sets (optional)
+# includes:
+#   - core.yaml
+
+repositories:
+  # Add repositories you want to work with
+  # build_order determines the Maven build sequence
+  #
+  # Example: Core components
+  - name: fess-parent
+    build_order: 1
+
+  - name: fess
+    build_order: 4
+
+  # Example: Custom branch
+  # - name: fess
+  #   branch: feature/my-feature
+  #   build_order: 4
+
+  # Example: Fork repository
+  # - name: my-fess-fork
+  #   remote: git@github.com:myuser/fess.git
+  #   build_order: 4
