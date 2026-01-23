@@ -136,28 +136,28 @@ while IFS=$'\t' read -r build_order name branch remote skip_build; do
     # Explicit skip via skip_build flag
     if [[ "${skip_build}" == "true" ]]; then
         log_info "Skipping ${name} (skip_build=true)"
-        ((skip_count++))
+        ((skip_count+=1))
         continue
     fi
 
     if [[ ! -d "${repo_path}" ]]; then
         log_warn "Repository not found: ${repo_path} (run clone.sh first)"
-        ((skip_count++))
+        ((skip_count+=1))
         continue
     fi
 
     if [[ ! -f "${repo_path}/pom.xml" ]]; then
         log_warn "No pom.xml found in ${name}, skipping"
-        ((skip_count++))
+        ((skip_count+=1))
         continue
     fi
 
     if (cd "${repo_path}" && mvn "${MVN_ARGS[@]}"); then
         log_success "Built: ${name}"
-        ((build_count++))
+        ((build_count+=1))
     else
         log_error "Build failed: ${name}"
-        ((error_count++))
+        ((error_count+=1))
         die "Stopping build due to error in ${name}"
     fi
 

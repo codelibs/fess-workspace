@@ -122,7 +122,7 @@ for repo in "${repos[@]}"; do
 
     if [[ "${FETCH_ONLY}" == "true" ]]; then
         log_success "Fetched: ${repo}"
-        ((sync_count++))
+        ((sync_count+=1))
         continue
     fi
 
@@ -135,7 +135,7 @@ for repo in "${repos[@]}"; do
             stashed=true
         else
             log_warn "Local changes detected, skipping pull (use --force to stash)"
-            ((skip_count++))
+            ((skip_count+=1))
             continue
         fi
     else
@@ -145,15 +145,15 @@ for repo in "${repos[@]}"; do
     # Pull
     if git -C "${repo_path}" pull --ff-only; then
         log_success "Synced: ${repo}"
-        ((sync_count++))
+        ((sync_count+=1))
     else
         log_warn "Pull failed (non-fast-forward), trying rebase..."
         if git -C "${repo_path}" pull --rebase; then
             log_success "Synced (rebased): ${repo}"
-            ((sync_count++))
+            ((sync_count+=1))
         else
             log_error "Sync failed: ${repo}"
-            ((error_count++))
+            ((error_count+=1))
         fi
     fi
 
