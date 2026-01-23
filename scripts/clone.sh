@@ -110,7 +110,7 @@ while IFS=$'\t' read -r build_order name branch remote skip_build; do
             # Verify it's a git repository
             if ! git rev-parse --git-dir > /dev/null 2>&1; then
                 log_error "Not a git repository: ${repo_path}"
-                ((error_count++))
+                ((error_count+=1))
                 popd > /dev/null
                 continue
             fi
@@ -121,7 +121,7 @@ while IFS=$'\t' read -r build_order name branch remote skip_build; do
             # Fetch latest from remote
             if ! git fetch origin; then
                 log_error "Failed to fetch from remote: ${name}"
-                ((error_count++))
+                ((error_count+=1))
                 popd > /dev/null
                 continue
             fi
@@ -153,7 +153,7 @@ while IFS=$'\t' read -r build_order name branch remote skip_build; do
             popd > /dev/null
 
             log_success "Updated: ${name} (${branch})"
-            ((update_count++))
+            ((update_count+=1))
             continue
         fi
     fi
@@ -161,10 +161,10 @@ while IFS=$'\t' read -r build_order name branch remote skip_build; do
     log_info "Cloning..."
     if git clone --branch "${branch}" "${remote}" "${repo_path}"; then
         log_success "Cloned: ${name}"
-        ((clone_count++))
+        ((clone_count+=1))
     else
         log_error "Failed to clone: ${name}"
-        ((error_count++))
+        ((error_count+=1))
     fi
 
 done < <(yaml_get_unique_repos "${set_file}")

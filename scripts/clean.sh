@@ -79,7 +79,7 @@ if [[ "${TARGET_ONLY}" == "true" ]]; then
         if [[ -d "${target_dir}" ]]; then
             rm -rf "${target_dir}"
             log_success "Cleaned: ${repo}/target"
-            ((clean_count++))
+            ((clean_count+=1))
         fi
     done
 
