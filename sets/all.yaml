@@ -1,0 +1,122 @@
+name: all
+description: "All Fess development set"
+
+defaults:
+  # SSH (recommended for development)
+  remote_base: git@github.com:codelibs
+  # HTTPS alternative:
+  # remote_base: https://github.com/codelibs
+  branch: master
+
+repositories:
+  - name: fess-parent
+    branch: main
+    build_order: 1
+
+  - name: fess-crawler
+    build_order: 2
+
+  - name: fess-crawler-playwright
+    branch: main
+    build_order: 3
+
+  - name: fess-suggest
+    build_order: 4
+
+  - name: fess
+    build_order: 5
+
+  - name: fess-ds-atlassian
+    build_order: 10
+
+  - name: fess-ds-box
+    build_order: 10
+
+  - name: fess-ds-csv
+    build_order: 10
+
+  - name: fess-ds-db
+    build_order: 10
+
+  - name: fess-ds-dropbox
+    build_order: 10
+
+  - name: fess-ds-elasticsearch
+    build_order: 10
+
+  - name: fess-ds-example
+    build_order: 10
+
+  - name: fess-ds-git
+    build_order: 10
+
+  - name: fess-ds-gsuite
+    build_order: 10
+
+  - name: fess-ds-json
+    build_order: 10
+
+  - name: fess-ds-microsoft365
+    build_order: 10
+
+  - name: fess-ds-salesforce
+    build_order: 10
+
+  - name: fess-ds-sharepoint
+    build_order: 10
+
+  - name: fess-ds-slack
+    build_order: 10
+
+  - name: fess-ds-wikipedia
+    branch: main
+    build_order: 10
+
+  - name: fess-ingest-example
+    branch: main
+    build_order: 10
+
+  - name: fess-script-example
+    branch: main
+    build_order: 10
+
+  - name: fess-script-ognl
+    branch: main
+    build_order: 10
+
+  - name: fess-theme-codesearch
+    build_order: 10
+
+  - name: fess-theme-simple
+    build_order: 10
+
+  - name: fess-thumbnail-playwright
+    branch: main
+    build_order: 10
+
+  - name: fess-webapp-classic-api
+    branch: main
+    build_order: 10
+
+  - name: fess-webapp-example
+    build_order: 10
+
+  - name: fess-webapp-mcp
+    branch: main
+    build_order: 10
+
+  - name: fess-webapp-multimodal
+    branch: main
+    build_order: 10
+
+  - name: fess-webapp-semantic-search
+    branch: main
+    build_order: 10
+
+  - name: fess-kopf
+    branch: main
+    build_order: 20
+
+  - name: fess-docs
+    build_order: 99
+    skip_build: true

@@ -148,5 +148,5 @@ yaml_process_set_with_includes() {
 # Output: sorted unique list by build order
 yaml_get_unique_repos() {
     local set_file="$1"
-    yaml_process_set_with_includes "${set_file}" "" | sort -t$'\t' -k1 -n -k2 -u | sort -t$'\t' -k1 -n
+    yaml_process_set_with_includes "${set_file}" "" | sort -t$'\t' -k1,1n -k2,2 -u | sort -t$'\t' -k1,1n
 }
