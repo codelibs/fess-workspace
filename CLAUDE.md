@@ -10,6 +10,15 @@ scripts/       # Management scripts
 repos/         # Clone destination (gitignored)
 ```
 
+## Code Reference
+
+When reading or editing Fess-related code, always refer to repositories in the `repos/` directory:
+
+- `repos/fess/` - Main Fess application
+- `repos/fess-crawler/` - Crawler
+- `repos/fess-suggest/` - Suggest feature
+- `repos/fess-parent/` - Maven parent POM
+
 ## Build
 
 ```bash
