@@ -1,46 +1,19 @@
 # fess-workspace
 
-Multi-repository development environment for Fess enterprise search server.
+## Important: Source Code Location
 
-## Structure
-
-```
-sets/          # Repository set definitions (YAML)
-scripts/       # Management scripts
-repos/         # Clone destination (gitignored)
-```
+**ALWAYS use source code in the `repos/` directory when reading, editing, or referencing Fess-related code.** Do not search outside this directory for Fess implementation details.
 
 ## Code Reference
 
-When reading or editing Fess-related code, always refer to repositories in the `repos/` directory:
+Primary repositories for development:
 
 - `repos/fess/` - Main Fess application
-- `repos/fess-crawler/` - Crawler
+- `repos/fess-crawler/` - Web/File crawler
 - `repos/fess-suggest/` - Suggest feature
 - `repos/fess-parent/` - Maven parent POM
 
-## Build
-
-```bash
-./scripts/clone.sh core           # Clone repositories
-./scripts/build.sh core           # Build (skip tests)
-./scripts/build.sh core --with-tests  # Build with tests
-./scripts/status.sh               # Check status
-./scripts/sync.sh core            # Sync to latest
-```
-
-### Build Order (Core)
-
-1. fess-parent (Maven parent POM)
-2. fess-crawler (Crawler)
-3. fess-suggest (Suggest)
-4. fess (Main app)
-
-## Tech Stack
-
-- Java 21 / Maven
-- OpenSearch (search backend)
-- LastaFlute (web framework)
+See `sets/*.yaml` for full repository listings.
 
 ## Coding Standards
 
@@ -52,3 +25,7 @@ When reading or editing Fess-related code, always refer to repositories in the `
 - Use `set -euo pipefail`
 - Source `scripts/lib/common.sh`
 - Use `log_info`, `log_success`, `log_warn`, `log_error` for output
+
+## Quick Reference
+
+For build commands, prerequisites, and detailed workflows, see [README.md](README.md).
