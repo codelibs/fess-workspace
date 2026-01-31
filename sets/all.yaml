@@ -117,6 +117,9 @@ repositories:
     branch: main
     build_order: 20
 
+  - name: docker-fess
+    build_order: 30
+
   - name: fess-docs
     build_order: 99
     skip_build: true
