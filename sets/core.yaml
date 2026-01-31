@@ -26,6 +26,9 @@ repositories:
   - name: fess
     build_order: 5
 
+  - name: docker-fess
+    build_order: 30
+
   - name: fess-docs
     build_order: 99
     skip_build: true
