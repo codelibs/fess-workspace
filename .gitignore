@@ -21,3 +21,6 @@ target/
 
 # Others
 .serena/memories/
+
+# Fess work directory
+work/
