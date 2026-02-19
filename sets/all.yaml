@@ -87,6 +87,9 @@ repositories:
   - name: fess-theme-codesearch
     build_order: 10
 
+  - name: fess-theme-docsearch
+    build_order: 10
+
   - name: fess-theme-simple
     build_order: 10
 
