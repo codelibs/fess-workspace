@@ -88,6 +88,7 @@ repositories:
     build_order: 10
 
   - name: fess-theme-docsearch
+    branch: main
     build_order: 10
 
   - name: fess-theme-simple
