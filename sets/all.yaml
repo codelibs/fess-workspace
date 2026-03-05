@@ -109,6 +109,18 @@ repositories:
     branch: main
     build_order: 10
 
+  - name: fess-llm-ollama
+    branch: main
+    build_order: 10
+
+  - name: fess-llm-openai
+    branch: main
+    build_order: 10
+
+  - name: fess-llm-gemini
+    branch: main
+    build_order: 10
+
   - name: fess-webapp-multimodal
     branch: main
     build_order: 10
