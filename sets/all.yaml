@@ -9,22 +9,49 @@ defaults:
   branch: master
 
 repositories:
+  - name: corelib
+    build_order: 1
+
+  - name: curl4j
+    build_order: 1
+
+  - name: fesen-httpclient
+    branch: main
+    build_order: 2
+
+  - name: java-saml
+    branch: main
+    build_order: 1
+
+  - name: jcifs
+    branch: main
+    build_order: 1
+
+  - name: jhighlight
+    build_order: 1
+
+  - name: nekohtml
+    build_order: 1
+
+  - name: spnego
+    build_order: 1
+
   - name: fess-parent
     branch: main
     build_order: 1
 
   - name: fess-crawler
-    build_order: 2
+    build_order: 3
 
   - name: fess-crawler-playwright
     branch: main
-    build_order: 3
-
-  - name: fess-suggest
     build_order: 4
 
-  - name: fess
+  - name: fess-suggest
     build_order: 5
+
+  - name: fess
+    build_order: 6
 
   - name: fess-ds-atlassian
     build_order: 10
