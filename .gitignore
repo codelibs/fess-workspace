@@ -15,6 +15,9 @@ repos/
 # Build artifacts
 target/
 
+# Build logs
+logs/
+
 # Environment files
 .env
 .env.local
