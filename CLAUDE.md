@@ -28,6 +28,14 @@
 
 Build order: fess-parent -> fess-crawler -> fess-suggest -> fess -> plugins
 
+## Cross-repo Build Tips
+
+- `repos/fess` uses `<packaging>war</packaging>`. To install as jar for plugin compilation:
+  1. Change `repos/fess/pom.xml` packaging to `jar`
+  2. `cd repos/fess && mvn clean install -DskipTests`
+  3. Revert packaging back to `war`
+- Run `mvn formatter:format && mvn license:format` in each repo separately
+
 ## Code Reference
 
 Primary repositories:
