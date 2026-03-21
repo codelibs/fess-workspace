@@ -1,6 +1,6 @@
 ---
 name: fess-i18n
-description: Manage internationalization messages in Fess. Use when adding new user-facing text, translating messages, or managing fess_message*.properties files.
+description: Manage internationalization messages in Fess. Use when adding new user-facing text, translating messages, syncing missing i18n keys across language variants, or managing fess_label*.properties and fess_message*.properties files.
 ---
 
 # Fess Internationalization (i18n) Manager
@@ -89,13 +89,31 @@ Follow Fess's existing patterns:
 | `confirm.` | Confirmation dialogs | `confirm.delete` |
 | `info.` | Informational messages | `info.no_results` |
 
-### 4. Checking for Missing Translations
+### 4. Syncing Missing Keys Across All Languages
 
-Use this checklist:
-1. Find all keys in default file
-2. Compare with each language file
-3. Identify missing keys
-4. Add translations or placeholders
+Fess has 17 label files and 17 message files across 16+ languages. When new keys are added to the base file, they must be propagated to ALL variants. Use the bundled sync script to automate this:
+
+```bash
+# From the workspace root:
+bash .claude/skills/fess-i18n/scripts/sync_i18n.sh repos/fess/src/main/resources/
+
+# Or from within repos/fess:
+bash ../../.claude/skills/fess-i18n/scripts/sync_i18n.sh src/main/resources/
+```
+
+The script will:
+- Compare keys in `fess_label.properties` and `fess_message.properties` against all 16 language variants (de, en, es, fr, hi, id, it, ja, ko, nl, pl, pt_BR, ru, tr, zh_CN, zh_TW)
+- Append missing keys with the English (base) value as a placeholder
+- Print a summary table showing which files were updated
+
+**After running the sync:**
+- Added keys use the English value as a placeholder and need translation
+- The script is idempotent — running it again adds nothing if already in sync
+- Review the appended keys; you may want to reorder them to match the base file
+
+### 5. Checking for Missing Translations (Manual)
+
+For a quick manual check of a single language:
 
 ```bash
 # Compare keys between files
@@ -103,7 +121,7 @@ diff <(grep -E "^[a-zA-Z]" fess_message.properties | cut -d= -f1 | sort) \
      <(grep -E "^[a-zA-Z]" fess_message_ja.properties | cut -d= -f1 | sort)
 ```
 
-### 5. Placeholder Syntax
+### 6. Placeholder Syntax
 
 Use numbered placeholders for dynamic values:
 
