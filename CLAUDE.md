@@ -23,7 +23,8 @@
 ./scripts/sync.sh all               # Fetch and pull all repos
 ./scripts/status.sh                 # Show all repository status
 ./scripts/status.sh --short         # Compact output
-./scripts/clean.sh --target         # Clean Maven target/ directories only
+./scripts/clean.sh                 # Clean all repos (mvn clean, npm clean, etc.)
+./scripts/clean.sh --target        # Quick clean: remove build output dirs directly
 ```
 
 Build order: fess-parent -> fess-crawler -> fess-suggest -> fess -> plugins
