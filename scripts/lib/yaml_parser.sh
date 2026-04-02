@@ -20,9 +20,14 @@ yaml_get_set_description() {
 }
 
 # Get default remote base URL
+# Use FESS_WORKSPACE_GIT_SSH=true to switch to SSH URLs
 yaml_get_remote_base() {
     local set_file="$1"
-    yq -r '.defaults.remote_base // "git@github.com:codelibs"' "${set_file}"
+    if [[ "${FESS_WORKSPACE_GIT_SSH:-}" == "true" ]]; then
+        yq -r '.defaults.remote_base_ssh // "git@github.com:codelibs"' "${set_file}"
+    else
+        yq -r '.defaults.remote_base // "https://github.com/codelibs"' "${set_file}"
+    fi
 }
 
 # Get default branch
