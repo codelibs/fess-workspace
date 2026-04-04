@@ -42,7 +42,8 @@ Based on the doc topic, read the applicable checklist reference files. Always gr
 For each doc file:
 1. Map to source files using the source-mapping table
 2. Apply all loaded checklist items systematically
-3. Record findings in the output format below
+3. For each finding, check if the same issue exists in other language versions (de/, en/, es/, fr/, ko/, zh-cn/) of the same file
+4. Record findings in the output format below
 
 ## Output Format
 
