@@ -18,98 +18,31 @@ The user specifies target documentation files:
 
 ### 1. Identify Source of Truth
 
-Map each doc file to its primary source reference:
+Read `refs/source-mapping.md` to map each doc file to its primary source code reference. This table covers all major topics: config properties, SSO, API, LLM/RAG, crawling, datastore connectors, search, LDAP, scripting, deployment, and more.
 
-| Doc Topic | Primary Source |
-|-----------|---------------|
-| Core config properties | `repos/fess/src/main/resources/fess_config.properties` |
-| Config constants/defaults | `repos/fess/src/main/java/org/codelibs/fess/mylasta/direction/FessConfig.java` |
-| Application constants | `repos/fess/src/main/java/org/codelibs/fess/Constants.java` |
-| SSO (SAML) | `repos/fess/src/main/java/org/codelibs/fess/sso/saml/SamlAuthenticator.java` |
-| SSO (OIDC) | `repos/fess/src/main/java/org/codelibs/fess/sso/oic/OicAuthenticator.java` |
-| SSO (Entra ID) | `repos/fess/src/main/java/org/codelibs/fess/sso/entraid/EntraIdAuthenticator.java` |
-| SSO (SPNEGO) | `repos/fess/src/main/java/org/codelibs/fess/sso/spnego/SpnegoAuthenticator.java` |
-| API endpoints | `repos/fess/src/main/java/org/codelibs/fess/api/` |
-| LLM/RAG chat | `repos/fess/src/main/java/org/codelibs/fess/llm/AbstractLlmClient.java` |
-| LLM providers | `repos/fess-llm-ollama/`, `repos/fess-llm-openai/`, `repos/fess-llm-gemini/` |
-| Crawling | `repos/fess/src/main/java/org/codelibs/fess/crawler/`, `repos/fess-crawler/` |
-| Datastore connectors | `repos/fess-ds-*/` |
-| Search/Query | `repos/fess/src/main/java/org/codelibs/fess/helper/SearchHelper.java`, `QueryHelper.java` |
-| Index mappings | `repos/fess/src/main/resources/fess_indices/` |
-| LDAP | `repos/fess/src/main/java/org/codelibs/fess/ldap/` |
-| DI config | `repos/fess/src/main/resources/app.xml`, `fess.xml`, `fess_*.xml` |
+### 2. Load Relevant Checklists
 
-### 2. Review Checklist
+Based on the doc topic, read the applicable checklist reference files. Always grep/read actual source — never assume correctness.
 
-For each doc file, verify the following. Always grep/read actual source — never assume correctness.
+**Always load:**
+- `refs/checklist-config.md` — Property names (A), crawler config parameters (A2), defaults (B), permissions (E), ports (G), technical descriptions (H), feature existence (H4), placeholders (H3), validation (I), index names (I2), admin UI (I3), deployment paths (I4)
 
-#### A. Configuration Property Names
-- Every property key in the doc must exist in `fess_config.properties` or relevant Java source.
-- Check for typos, outdated names, or incorrect prefixes.
-- Watch for property key transformation patterns:
-  - SAML: `saml.` prefix is stripped and `onelogin.saml2.` is prepended. So `saml.strict` maps to `onelogin.saml2.strict`, but `saml.security.strict` would incorrectly map to `onelogin.saml2.security.strict`.
-  - Config override: Properties can be overridden via system properties with `Constants.FESS_CONFIG_PREFIX`.
+**Load when relevant:**
 
-#### B. Default Values
-- Compare every documented default against:
-  1. `fess_config.properties` (explicit defaults)
-  2. `FessConfig.java` (`DEFAULT_*` constants, getter fallback values)
-  3. Java code (`getSystemProperty("key", "default")` patterns)
-  4. Plugin-specific properties files (for `fess-llm-*`, `fess-ds-*` etc.)
+| Doc Topic | Additional Ref | Sections |
+|-----------|---------------|----------|
+| API, RAG chat, streaming | `refs/checklist-api.md` | C: endpoints/HTTP methods, D: SSE events |
+| Datastore connectors (`ds-*.rst`) | `refs/checklist-datastore.md` | H2: data format claims, J: missing/duplicate entries, J2: handler/parameter completeness, J3: script field prefixes |
+| Scripting, scheduled jobs | `refs/checklist-scripting.md` | K2: script execution context, K3: job names/scripts, K4: Groovy syntax |
+| Non-ja translations | `refs/checklist-cross-lang.md` | K: fabricated properties/capabilities, punctuation, directive/section consistency |
+| Setup, install, JVM config, logs, Docker | `refs/checklist-infra.md` | F: JVM options, F1: Docker env var mapping, I4: deployment paths, I5: log file names, L: RST syntax, M: version consistency |
 
-#### C. API Endpoints and HTTP Methods
-- Verify paths (e.g., `/api/v1/chat`) against path constants or `@Execute` annotations.
-- Check supported HTTP methods.
-- Verify request/response parameter names and types.
+### 3. Execute Review
 
-#### D. SSE Event Types
-- For streaming APIs, verify event names against `sendSseEvent(writer, "eventName", ...)` calls.
-- Check event payload fields match documentation.
-- Confirm no documented events are missing from source, and no source events are missing from docs.
-
-#### E. Permission Format
-- Fess uses `{role}`, `{user}`, `{group}` prefix format (e.g., `{role}guest`).
-- Verify documented examples use this format, not bare names like `role_xxx`.
-- Cross-reference: `role.search.user.prefix`, `role.search.group.prefix`, `role.search.role.prefix` in `fess_config.properties`.
-
-#### F. JVM Options and Memory Settings
-- Compare documented JVM flags against `jvm.crawler.options`, `jvm.suggest.options`, `jvm.thumbnail.options` in `fess_config.properties`.
-- Verify heap sizes (`-Xms`, `-Xmx`), metaspace, GC settings.
-- Check environment variable names against shell/batch scripts.
-
-#### G. Port Numbers and URLs
-- Fess default: `8080`
-- OpenSearch HTTP: `9201` (Fess custom, not standard 9200)
-- OpenSearch Transport: `9301`
-- `search_engine.http.url` default: `http://localhost:9201`
-
-#### H. Technical Descriptions
-- Verify algorithm descriptions (e.g., RRF formula) match implementation.
-- Check behavior descriptions (e.g., "returns 429 when CPU >= threshold") against actual logic.
-- Verify enum/mode values (e.g., `smart_summary`, `full`, `truncated`) match switch statements or constants.
-
-#### I. Index and Field Names
-- Verify OpenSearch index names (e.g., `fess.search`, `fess_config`, `fess_log`).
-- Check field names match index mapping definitions in `fess_indices/`.
-
-#### J. Duplicate or Missing Entries
-- Check for duplicate rows in RST `list-table` directives.
-- Check for properties defined in source but missing from doc tables.
-
-#### K. Cross-language Consistency
-- Property names and default values must be identical across all languages (`de/`, `en/`, `es/`, `fr/`, `ja/`, `ko/`, `zh-cn/`).
-- Only descriptions/explanations should differ between languages.
-- When a fix is found, check if the same issue exists in other language versions.
-
-#### L. RST Syntax
-- `list-table` column counts and alignment.
-- Code block syntax (`::`  or `.. code-block::`).
-- Cross-references (`:doc:`, `:ref:`) point to existing targets.
-- `|Fess|` substitution used consistently.
-
-#### M. Version Consistency
-- Version numbers in examples, JAR filenames, and URLs match the doc version (e.g., `15.6`).
-- Plugin JAR naming convention: `fess-{type}-{name}-{version}.jar`.
+For each doc file:
+1. Map to source files using the source-mapping table
+2. Apply all loaded checklist items systematically
+3. Record findings in the output format below
 
 ## Output Format
 
@@ -148,13 +81,17 @@ For each doc file, verify the following. Always grep/read actual source — neve
 
 ## Parallelization
 
-For large directories (>10 files), spawn parallel review agents grouped by topic:
-- Search settings (search-*.rst)
-- Crawler configuration (crawler-*.rst)
-- SSO/Security (sso-*.rst, security-*.rst, ldap-*.rst)
-- LLM/RAG (llm-*.rst, rag-*.rst)
-- Admin operations (admin-*.rst)
-- Datastore connectors (datastore/*.rst)
-- Setup/Infrastructure (setup-*.rst)
+For large directories (>10 files), spawn parallel review agents grouped by topic. All workers read `refs/source-mapping.md` and `refs/checklist-config.md`. Additional refs per group:
+
+| Worker Group | File Patterns | Additional Refs |
+|---|---|---|
+| Search settings | search-*.rst | (config only) |
+| Crawler configuration | crawler-*.rst | (config only) |
+| SSO/Security | sso-*.rst, security-*.rst, ldap-*.rst | (config only) |
+| LLM/RAG | llm-*.rst, rag-*.rst | checklist-api.md, checklist-infra.md (F1: Docker env vars) |
+| Admin operations | admin-*.rst | (config only) |
+| Datastore connectors | ds-*.rst | checklist-datastore.md, checklist-scripting.md |
+| Setup/Infrastructure | setup-*.rst, install-*.rst | checklist-infra.md |
+| Cross-language | non-ja/ versions | checklist-cross-lang.md |
 
 Each worker reads assigned doc files, cross-references against source, and reports findings. The coordinator merges results and applies fixes.
