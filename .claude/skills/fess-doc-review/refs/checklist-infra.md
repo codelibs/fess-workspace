@@ -2,6 +2,12 @@
 
 Detailed verification rules for JVM options, deployment paths, RST syntax, and version consistency.
 
+## E0. CLI Command and Script Verification
+
+- When docs reference CLI commands (e.g., `./bin/fess-plugin install`, `./bin/fess-cli`), verify the script exists in `repos/fess/src/main/assemblies/files/`. The actual available scripts are: `fess`, `fess.bat`, `fess.in.sh`, `fess.in.bat`, `generate-thumbnail`, `service.bat`, and service executables. No `fess-plugin` or similar CLI tool exists — plugin management is admin UI only (`AdminPluginAction.java`).
+- **Docker environment variable verification**: When docs reference Docker-specific env vars (e.g., `FESS_PLUGINS`, `FESS_AUTO_INSTALL`), verify they are consumed by the Docker entrypoint script or `fess.in.sh`. Fabricated env vars that look plausible are silently ignored at runtime. Check `fess.in.sh` for `${VAR_NAME:-default}` patterns to confirm support.
+- **Installation method claims**: Fess plugin installation is available only via the admin UI ("システム" → "プラグイン"). Docs claiming alternative installation methods (CLI commands, Docker env vars, config file declarations) must be verified against source. If no implementation exists, report as INCORRECT (J4: fabricated feature).
+
 ## F0. Linux vs Windows Environment Variable Differences
 
 - `fess.in.sh` (Linux) supports environment variable overrides with fallback defaults for many settings: `FESS_PORT`, `FESS_CONTEXT_PATH`, `FESS_HEAP_SIZE`, `FESS_MIN_MEM`, `FESS_MAX_MEM`, `FESS_PROXY_HOST`, `FESS_PROXY_PORT`, `FESS_NON_PROXY_HOSTS`, `SEARCH_ENGINE_HTTP_URL`, etc.

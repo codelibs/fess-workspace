@@ -32,7 +32,8 @@ Based on the doc topic, read the applicable checklist reference files. Always gr
 | Doc Topic | Additional Ref | Sections |
 |-----------|---------------|----------|
 | API, RAG chat, streaming | `refs/checklist-api.md` | C: endpoints/HTTP methods, D: SSE events |
-| Datastore connectors (`ds-*.rst`) | `refs/checklist-datastore.md` | H2: data format claims, J: missing/duplicate entries, J2: handler/parameter completeness, J3: script field prefixes |
+| Datastore connectors (`ds-*.rst`) | `refs/checklist-datastore.md`, `refs/checklist-scripting.md` | H2: data format claims, H8: parameter value format vs library method contract, J: missing/duplicate entries, J2: handler/parameter completeness, J3: script field prefixes, K4: Groovy syntax (script examples) |
+| Datastore overview (`ds-overview.rst`) | `refs/checklist-datastore.md`, `refs/checklist-infra.md` | J2: overview completeness/generic param fabrication, E0: CLI/Docker install verification |
 | Scripting, scheduled jobs | `refs/checklist-scripting.md` | K2: script execution context, K3: job names/scripts, K4: Groovy syntax |
 | Non-ja translations | `refs/checklist-cross-lang.md` | K: fabricated properties/capabilities, punctuation, directive/section consistency |
 | Setup, install, JVM config, logs, Docker | `refs/checklist-infra.md` | F: JVM options, F1: Docker env var mapping, I4: deployment paths, I5: log file names, L: RST syntax, M: version consistency |

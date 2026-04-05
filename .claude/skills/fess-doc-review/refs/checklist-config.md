@@ -137,3 +137,9 @@ Detailed verification rules for config properties, defaults, permissions, ports,
   2. `src/packaging/rpm/packaging.properties`, `src/packaging/deb/packaging.properties` — package-specific paths (RPM uses `/etc/sysconfig/fess`, DEB uses `/etc/default/fess` for env files)
   3. `ResourceUtil.java` — runtime path resolution hierarchy: Docker (`/opt/fess`) → system property (`FESS_CONF_PATH`) → default (`WEB-INF/conf`)
 - Verify that documented paths for both zip-install and RPM/DEB-install variants are accurate for their respective deployment methods.
+- **Source code paths vs installed paths**: Docs must reference **installed** paths, not Maven source tree paths. Files under `src/main/resources/` are packaged into `app/WEB-INF/classes/` at build time. If a doc references `src/main/resources/...`, report as INCORRECT and fix to `app/WEB-INF/classes/...`. Common examples:
+  - `src/main/resources/fess_config.properties` → `app/WEB-INF/classes/fess_config.properties`
+  - `src/main/resources/fess_thumbnail.xml` → `app/WEB-INF/classes/fess_thumbnail.xml`
+  - `src/main/resources/fess_indices/fess/doc.json` → `app/WEB-INF/classes/fess_indices/fess/doc.json`
+  - Similarly, `src/main/webapp/WEB-INF/...` maps to `app/WEB-INF/...`
+  - Phrases like 「ソースコード上では」should also be removed or rewritten, since docs describe the deployed system, not the source tree.
