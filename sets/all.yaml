@@ -166,6 +166,11 @@ repositories:
     branch: main
     build_order: 40
 
+  - name: fess-test-ui
+    branch: main
+    build_order: 99
+    skip_build: true
+
   - name: fess-docs
     build_order: 99
     skip_build: true
