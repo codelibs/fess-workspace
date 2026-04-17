@@ -56,9 +56,8 @@ See `sets/*.yaml` for full repository listings (`all.yaml`, `core.yaml`, `plugin
 
 Non-repo directories:
 
-- `jakarta/servlet/http/` - Local Jakarta Servlet override stubs (do not treat as Fess source)
-- `docs/` - Workspace-level notes and reports (not Fess docs; those live in `repos/fess-docs/`)
-- `work/` - Scratch/working directory (gitignored)
+- `docs/` - Workspace-level notes and reports
+- `work/` - Scratch/working directory
 
 ## Coding Standards
 
