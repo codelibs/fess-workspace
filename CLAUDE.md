@@ -25,6 +25,8 @@
 ./scripts/status.sh --short         # Compact output
 ./scripts/clean.sh                 # Clean all repos (mvn clean, npm clean, etc.)
 ./scripts/clean.sh --target        # Quick clean: remove build output dirs directly
+./scripts/test-integration.sh      # Run integration tests (requires Docker)
+./scripts/release-branch.sh        # Create/manage release branches across repos
 ```
 
 Build order: fess-parent -> fess-crawler -> fess-suggest -> fess -> plugins
@@ -36,6 +38,7 @@ Build order: fess-parent -> fess-crawler -> fess-suggest -> fess -> plugins
   2. `cd repos/fess && mvn clean install -DskipTests`
   3. Revert packaging back to `war`
 - Run `mvn formatter:format && mvn license:format` in each repo separately
+- Custom repo sets: copy `sets/custom.yaml.example` to `sets/my-set.yaml`, then pass `my-set` to any script (e.g. `./scripts/build.sh my-set`)
 
 ## Code Reference
 
@@ -51,6 +54,11 @@ Primary repositories:
 
 See `sets/*.yaml` for full repository listings (`all.yaml`, `core.yaml`, `plugins.yaml`).
 
+Non-repo directories:
+
+- `docs/` - Workspace-level notes and reports
+- `work/` - Scratch/working directory
+
 ## Coding Standards
 
 ### Java
@@ -61,5 +69,5 @@ See `sets/*.yaml` for full repository listings (`all.yaml`, `core.yaml`, `plugin
 
 ### Scripts
 - Use `set -euo pipefail`
-- Source `scripts/lib/common.sh`
+- Source `scripts/lib/common.sh` (logging, helpers) and `scripts/lib/yaml_parser.sh` (set file parsing)
 - Use `log_info`, `log_success`, `log_warn`, `log_error` for output
