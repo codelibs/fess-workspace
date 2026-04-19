@@ -67,9 +67,6 @@ repositories:
   - name: fess-ds-dropbox
     build_order: 10
 
-  - name: fess-ds-elasticsearch
-    build_order: 10
-
   - name: fess-ds-example
     build_order: 10
 

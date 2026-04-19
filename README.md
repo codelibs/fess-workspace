@@ -80,7 +80,6 @@ The complete Fess development ecosystem with all components, plugins, and tools:
 | **fess-ds-csv** | CSV file data source |
 | **fess-ds-db** | Database connector (JDBC) |
 | **fess-ds-dropbox** | Dropbox cloud storage connector |
-| **fess-ds-elasticsearch** | Elasticsearch data source |
 | **fess-ds-example** | Example data source template |
 | **fess-ds-git** | Git repository crawler |
 | **fess-ds-gsuite** | Google Workspace (G Suite) connector |
