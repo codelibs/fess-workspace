@@ -50,7 +50,12 @@ Build Fess from source and extract to work directory.
 
 ```bash
 # Set variables
-ROOT_DIR="/Users/shinsuke/workspace/fess-workspace"
+# Resolve fess-workspace root (directory containing sets/all.yaml)
+ROOT_DIR="${FESS_WORKSPACE:-$PWD}"
+while [[ "${ROOT_DIR}" != "/" && ! -f "${ROOT_DIR}/sets/all.yaml" ]]; do
+    ROOT_DIR="$(dirname "${ROOT_DIR}")"
+done
+[[ -f "${ROOT_DIR}/sets/all.yaml" ]] || { echo "ERROR: run from inside fess-workspace (or set FESS_WORKSPACE)"; exit 1; }
 FESS_REPO="${ROOT_DIR}/repos/fess"
 WORK_DIR="${ROOT_DIR}/work/fess"
 
@@ -97,7 +102,12 @@ Start the Fess server in daemon mode.
 
 ```bash
 # Set variables
-ROOT_DIR="/Users/shinsuke/workspace/fess-workspace"
+# Resolve fess-workspace root (directory containing sets/all.yaml)
+ROOT_DIR="${FESS_WORKSPACE:-$PWD}"
+while [[ "${ROOT_DIR}" != "/" && ! -f "${ROOT_DIR}/sets/all.yaml" ]]; do
+    ROOT_DIR="$(dirname "${ROOT_DIR}")"
+done
+[[ -f "${ROOT_DIR}/sets/all.yaml" ]] || { echo "ERROR: run from inside fess-workspace (or set FESS_WORKSPACE)"; exit 1; }
 WORK_DIR="${ROOT_DIR}/work/fess"
 PID_FILE="${WORK_DIR}/fess.pid"
 
@@ -174,7 +184,12 @@ Stop the running Fess server gracefully.
 
 ```bash
 # Set variables
-ROOT_DIR="/Users/shinsuke/workspace/fess-workspace"
+# Resolve fess-workspace root (directory containing sets/all.yaml)
+ROOT_DIR="${FESS_WORKSPACE:-$PWD}"
+while [[ "${ROOT_DIR}" != "/" && ! -f "${ROOT_DIR}/sets/all.yaml" ]]; do
+    ROOT_DIR="$(dirname "${ROOT_DIR}")"
+done
+[[ -f "${ROOT_DIR}/sets/all.yaml" ]] || { echo "ERROR: run from inside fess-workspace (or set FESS_WORKSPACE)"; exit 1; }
 WORK_DIR="${ROOT_DIR}/work/fess"
 PID_FILE="${WORK_DIR}/fess.pid"
 
@@ -235,7 +250,12 @@ Check the current status of the Fess server.
 
 ```bash
 # Set variables
-ROOT_DIR="/Users/shinsuke/workspace/fess-workspace"
+# Resolve fess-workspace root (directory containing sets/all.yaml)
+ROOT_DIR="${FESS_WORKSPACE:-$PWD}"
+while [[ "${ROOT_DIR}" != "/" && ! -f "${ROOT_DIR}/sets/all.yaml" ]]; do
+    ROOT_DIR="$(dirname "${ROOT_DIR}")"
+done
+[[ -f "${ROOT_DIR}/sets/all.yaml" ]] || { echo "ERROR: run from inside fess-workspace (or set FESS_WORKSPACE)"; exit 1; }
 WORK_DIR="${ROOT_DIR}/work/fess"
 PID_FILE="${WORK_DIR}/fess.pid"
 FESS_PORT="${FESS_PORT:-8080}"
