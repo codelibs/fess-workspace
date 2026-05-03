@@ -168,6 +168,11 @@ repositories:
     build_order: 99
     skip_build: true
 
+  - name: homebrew-tap
+    branch: main
+    build_order: 99
+    skip_build: true
+
   - name: fess-docs
     build_order: 99
     skip_build: true
