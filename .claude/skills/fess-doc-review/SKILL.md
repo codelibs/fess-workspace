@@ -1,6 +1,6 @@
 ---
 name: fess-doc-review
-description: Review Fess documentation files (RST) against source code in repos/ to verify technical accuracy. Use when reviewing documentation for correctness, verifying config property names and defaults match source code, checking API endpoints and SSE events match implementation, or auditing docs before release. Triggers on requests like "review docs", "verify documentation", "check if docs match source", "doc review", or when pointing to specific RST files in fess-docs.
+description: Use when reviewing Fess RST documentation against source code for technical accuracy.
 ---
 
 # Fess Documentation Review

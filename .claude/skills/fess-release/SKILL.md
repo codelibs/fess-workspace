@@ -1,6 +1,6 @@
 ---
 name: fess-release
-description: Generate GitHub release notes for Fess. Use when creating release notes, preparing draft releases, or generating release announcements from milestone data. Fetches milestone issues from codelibs/fess, categorizes by labels, synthesizes curated English release notes, and creates a draft GitHub release with tag fess-x.x.x.
+description: Use when generating Fess GitHub release notes from a milestone.
 ---
 
 # Fess Release Notes Generator

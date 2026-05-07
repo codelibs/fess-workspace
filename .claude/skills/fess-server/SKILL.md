@@ -1,6 +1,6 @@
 ---
 name: fess-server
-description: Build, start, and stop Fess server. Use for local development, testing, or integration verification. Commands: build, start, stop, status.
+description: Use when building, starting, stopping, or checking the local Fess server.
 ---
 
 # Fess Server Management

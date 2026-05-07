@@ -1,6 +1,6 @@
 ---
 name: fess-tech-doc
-description: Use when creating, updating, or planning Fess technical articles — RST files under repos/fess-docs/ja/articles/ for the fess-docs site. Triggers include requests to write or draft a Fess article, design article structure, verify article technical accuracy against source code, or update the article index.
+description: Use when writing or planning Fess technical articles under repos/fess-docs/ja/articles/.
 ---
 
 # Fess Technical Article Writing

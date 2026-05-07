@@ -1,6 +1,6 @@
 ---
 name: fess-browser-test
-description: Framework for browser-based testing of Fess using agent-browser. Use when verifying UI functionality, running integration tests, or demonstrating features.
+description: Use when running browser-based UI tests for Fess.
 ---
 
 # Fess Browser Test Framework

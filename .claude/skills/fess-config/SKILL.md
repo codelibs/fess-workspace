@@ -1,6 +1,6 @@
 ---
 name: fess-config
-description: Manage Fess configuration files and settings. Use when modifying fess_config.properties, system settings, or environment-specific configurations.
+description: Use when editing Fess configuration in fess_config.properties or system settings.
 ---
 
 # Fess Configuration Manager

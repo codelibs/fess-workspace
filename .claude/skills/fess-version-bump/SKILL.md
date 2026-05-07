@@ -1,6 +1,6 @@
 ---
 name: fess-version-bump
-description: Use when starting a new Fess development cycle in fess-workspace — bumping every Fess-related repository from one SNAPSHOT to the next (e.g. 15.6.1-SNAPSHOT to 15.7.0-SNAPSHOT). Triggers include "create 15.X.x release branches", "bump to 15.Y.0-SNAPSHOT", or any request to coordinate a workspace-wide version update across fess-parent and its child repositories.
+description: Use when bumping SNAPSHOT versions across fess-workspace repositories.
 ---
 
 # Fess Version Bump
