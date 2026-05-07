@@ -1,6 +1,6 @@
 ---
 name: fess-search
-description: Build and optimize OpenSearch search queries for Fess. Use when working with search functionality, filters, or relevance tuning.
+description: Use when building or tuning Fess OpenSearch queries, filters, or search relevance.
 ---
 
 # Fess Search Query Builder

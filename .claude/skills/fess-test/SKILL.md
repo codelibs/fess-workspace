@@ -1,6 +1,6 @@
 ---
 name: fess-test
-description: Generate comprehensive tests for Fess components. Use when writing unit tests, integration tests, or validating functionality.
+description: Use when writing unit or integration tests for Fess components.
 context: fork
 ---
 

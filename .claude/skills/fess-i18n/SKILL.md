@@ -1,6 +1,6 @@
 ---
 name: fess-i18n
-description: Manage internationalization messages in Fess. Use when adding new user-facing text, translating messages, syncing missing i18n keys across language variants, or managing fess_label*.properties and fess_message*.properties files.
+description: Use when editing Fess i18n messages in fess_label*.properties or fess_message*.properties.
 ---
 
 # Fess Internationalization (i18n) Manager

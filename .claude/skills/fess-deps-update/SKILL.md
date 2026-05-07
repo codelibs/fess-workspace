@@ -1,6 +1,6 @@
 ---
 name: fess-deps-update
-description: Update dependency versions in fess-parent pom.xml. Use when upgrading library versions, checking for outdated dependencies, or performing periodic dependency maintenance. Checks Maven Central for latest versions, respects OpenSearch/Tika compatibility constraints, and runs full build verification.
+description: Use when updating dependency versions in fess-parent/pom.xml.
 ---
 
 # Fess Dependency Update Skill

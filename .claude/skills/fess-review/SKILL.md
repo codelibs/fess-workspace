@@ -1,6 +1,6 @@
 ---
 name: fess-review
-description: Perform Fess-specific code review with focus on LastaFlute patterns, security, and performance. Use when reviewing pull requests or code changes.
+description: Use when reviewing Fess code or pull requests for LastaFlute patterns, security, or performance.
 context: fork
 ---
 
