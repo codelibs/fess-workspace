@@ -104,6 +104,7 @@ The complete Fess development ecosystem with all components, plugins, and tools:
 | Repository | Description |
 |------------|-------------|
 | **fess-webapp-classic-api** | Classic API interface |
+| **fess-webapp-v1-api** | v1 API interface |
 | **fess-webapp-example** | Example web application |
 | **fess-webapp-mcp** | Model Context Protocol integration |
 | **fess-webapp-multimodal** | Multimodal search interface |
