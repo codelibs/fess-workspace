@@ -125,6 +125,10 @@ repositories:
     branch: main
     build_order: 10
 
+  - name: fess-webapp-v1-api
+    branch: main
+    build_order: 10
+
   - name: fess-webapp-example
     build_order: 10
 
