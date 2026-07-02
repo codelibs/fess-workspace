@@ -96,7 +96,6 @@ The complete Fess development ecosystem with all components, plugins, and tools:
 | **fess-ingest-example** | Example ingest processor |
 | **fess-script-example** | Example script implementations |
 | **fess-script-ognl** | OGNL scripting support |
-| **fess-theme-codesearch** | Code search theme |
 | **fess-theme-simple** | Simple UI theme |
 | **fess-thumbnail-playwright** | Thumbnail generation using Playwright |
 
