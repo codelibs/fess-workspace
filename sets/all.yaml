@@ -112,13 +112,6 @@ repositories:
     build_order: 10
     skip_build: true
 
-  - name: fess-theme-codesearch
-    build_order: 10
-
-  - name: fess-theme-docsearch
-    branch: main
-    build_order: 10
-
   - name: fess-theme-simple
     build_order: 10
 
