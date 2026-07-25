@@ -18,9 +18,13 @@
 ./scripts/build.sh all              # Build all (dependency order, skip tests)
 ./scripts/build.sh all --with-tests # Build all with tests
 ./scripts/build.sh all --clean      # Clean build
+./scripts/build.sh all --offline    # Offline build (mvn -o)
+./scripts/build.sh all --verbose    # Stream Maven output (default: logs/build/*.log)
 
 # Daily workflow
 ./scripts/sync.sh all               # Fetch and pull all repos
+./scripts/sync.sh all --fetch-only  # Fetch without pulling
+./scripts/sync.sh all --force       # Pull over local changes (stash and apply)
 ./scripts/status.sh                 # Show all repository status
 ./scripts/status.sh --short         # Compact output
 ./scripts/clean.sh                 # Clean all repos (mvn clean, npm clean, etc.)
@@ -29,7 +33,10 @@
 ./scripts/release-branch.sh        # Create/manage release branches across repos
 ```
 
-Build order: fess-parent -> fess-crawler -> fess-suggest -> fess -> plugins
+Build order (`build_order` in `sets/*.yaml`): libs (corelib, curl4j, java-saml, jcifs,
+jhighlight, nekohtml, spnego, fess-parent) -> fesen-httpclient -> fess-crawler ->
+fess-crawler-playwright -> fess-suggest -> fess -> plugins/themes -> fess-kopf ->
+docker-fess -> fessctl -> fess-test-ui, fess-docs
 
 ## Cross-repo Build Tips
 
@@ -40,17 +47,24 @@ Build order: fess-parent -> fess-crawler -> fess-suggest -> fess -> plugins
 - Run `mvn formatter:format && mvn license:format` in each repo separately
 - Custom repo sets: copy `sets/custom.yaml.example` to `sets/my-set.yaml`, then pass `my-set` to any script (e.g. `./scripts/build.sh my-set`)
 
+## Gotchas
+
+- **Default branch is `master`**, not `main` (`defaults.branch` in `sets/*.yaml`). `main` is a
+  per-repo override - incl. fess-parent, fess-themes, java-saml, jcifs, fesen-httpclient,
+  fess-crawler-playwright. `repos/fess` has no `main` branch at all.
+- `FESS_WORKSPACE_GIT_SSH=true` switches clone/sync remotes from HTTPS to SSH.
+- `build.sh` writes `logs/build/<repo>.log`; without `--verbose` Maven output goes only there.
+  Check that file first when a build fails.
+- `repos/`, `docs/`, `work/`, `logs/`, `target/` are gitignored - local scratch, not workspace
+  source. Do not `git add` them.
+- `repos/` may hold checkouts no longer listed in `sets/*.yaml` (e.g. some `fess-theme-*`); the
+  scripts skip them silently, so they never sync or build.
+
 ## Code Reference
 
-Primary repositories:
-
-- `repos/fess/` - Main Fess application (LastaFlute + OpenSearch)
-- `repos/fess-crawler/` - Web/File crawler
-- `repos/fess-suggest/` - Suggest feature
-- `repos/fess-parent/` - Maven parent POM
-- `repos/fess-ds-*/` - Data store connectors (Slack, SharePoint, DB, etc.)
-- `repos/fess-llm-*/` - LLM plugins (OpenAI, Ollama, Gemini)
-- `repos/fess-webapp-*/` - Web application plugins
+Repo naming: `fess` (app), `fess-crawler*` (crawlers), `fess-suggest`, `fess-parent` (dependency
+BOM), `fess-ds-*` (data stores), `fess-llm-*`, `fess-webapp-*` (plugins), `fess-theme*` /
+`fess-themes` (themes); the rest are CodeLibs libraries.
 
 See `sets/*.yaml` for full repository listings (`all.yaml`, `core.yaml`, `plugins.yaml`).
 
