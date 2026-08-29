@@ -103,6 +103,10 @@ repositories:
     branch: main
     build_order: 10
 
+  - name: fess-script-groovy
+    branch: main
+    build_order: 10
+
   - name: fess-script-ognl
     branch: main
     build_order: 10
