@@ -40,6 +40,16 @@ docker-fess -> fessctl -> fess-test-ui, fess-docs
 
 ## Cross-repo Build Tips
 
+- **Building a Fess binary requires `mvn antrun:run` first, then `mvn package`.** The antrun
+  plugin has no `<executions>`/`<phase>`, so the normal lifecycle never runs it. It downloads
+  dbflute, modules, plugins, kopf and - via `deps.xml` -
+  `src/main/webapp/WEB-INF/env/{crawler,suggest,thumbnail,chunk}/lib/jakarta.annotation-api-*.jar`.
+  Those directories are **gitignored generated output**, so a *fresh git worktree* does not have
+  them (`repos/fess` does, from an earlier run). Skipping the step still builds a WAR/ZIP that
+  boots, but every child-process job (crawler, thumbnail, suggest, chunk) dies at DI container
+  init with `NoClassDefFoundError: jakarta/annotation/PostConstruct` - the child classpath is
+  only `WEB-INF/classes` + `WEB-INF/lib/*.jar` + `WEB-INF/env/<type>/lib/*.jar`, and Tomcat
+  supplies that class to the webapp itself from `lib/classes`, not from `WEB-INF/lib`.
 - `repos/fess` uses `<packaging>war</packaging>`. To install as jar for plugin compilation:
   1. Change `repos/fess/pom.xml` packaging to `jar`
   2. `cd repos/fess && mvn clean install -DskipTests`
@@ -57,8 +67,8 @@ docker-fess -> fessctl -> fess-test-ui, fess-docs
   Check that file first when a build fails.
 - `repos/`, `docs/`, `work/`, `logs/`, `target/` are gitignored - local scratch, not workspace
   source. Do not `git add` them.
-- `repos/` may hold checkouts no longer listed in `sets/*.yaml` (e.g. some `fess-theme-*`); the
-  scripts skip them silently, so they never sync or build.
+- `repos/` may hold checkouts no longer listed in `sets/*.yaml` (left behind when a repository is
+  dropped from a set); the scripts skip them silently, so they never sync or build.
 
 ## Code Reference
 

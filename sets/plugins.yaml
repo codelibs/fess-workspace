@@ -54,7 +54,3 @@ repositories:
   # Theme plugins
   - name: fess-theme-simple
     build_order: 20
-
-  # Webapp plugins
-  - name: fess-webapp-semantic-search
-    build_order: 20
