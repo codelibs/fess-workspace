@@ -1,317 +1,357 @@
 # fess-workspace
 
-A comprehensive multi-repository development environment for [Fess](https://fess.codelibs.org/) enterprise search server, managed through YAML set definitions.
+A multi-repository development environment for [Fess](https://fess.codelibs.org/), the open-source
+enterprise search server, and its surrounding CodeLibs ecosystem. Repositories are described in YAML
+"set" files and managed with a handful of Bash scripts.
 
 ## Overview
 
-fess-workspace provides a unified development workflow for the entire Fess ecosystem:
-
-- **Set-based management**: Define which repositories to work with via YAML files
-- **Dependency-aware builds**: Automatically build in the correct order
-- **Independent repositories**: Each repo is a full git clone (not submodules)
-- **Comprehensive coverage**: Includes all Fess components, plugins, and extensions
-- **Claude Code optimized**: Includes CLAUDE.md for AI-assisted development
+- **Set-based management** — YAML files under `sets/` declare which repositories to clone and build
+- **Dependency-aware builds** — `build_order` drives the Maven build sequence across repositories
+- **Independent checkouts** — every repository is a full git clone under `repos/` (not submodules)
+- **Whole-ecosystem coverage** — core, libraries, data store connectors, LLM/webapp plugins, themes, Docker, CLI
+- **AI-assisted development** — `CLAUDE.md` plus project agents and skills under `.claude/`
 
 ## Prerequisites
 
-- **Git**: Version control
-- **Java 21+**: Required for building Fess components
-- **Maven 3.8+**: Build tool
-- **yq**: YAML processor (`brew install yq` on macOS)
-- **Docker** (optional): For integration tests and containerized development
+- **Git**
+- **Java 21+** — required to build Fess components
+- **Maven 3.8+**
+- **yq** — YAML processor used by the scripts (`brew install yq` on macOS)
+- **Docker** (optional) — for integration tests and containerized development
+- **GitHub CLI (`gh`)** (optional) — required only by `scripts/release-branch.sh`
 
 ## Quick Start
 
 ```bash
-# Clone this workspace
-git clone git@github.com:codelibs/fess-workspace.git
+git clone https://github.com/codelibs/fess-workspace.git
 cd fess-workspace
 
-# Clone all repositories (recommended)
-./scripts/clone.sh all
-
-# Build all components
-./scripts/build.sh all
-
-# Check status
-./scripts/status.sh
+./scripts/clone.sh all       # Clone (or update) every repository in the "all" set
+./scripts/build.sh all       # Build in dependency order, skipping tests
+./scripts/status.sh          # Show git status for every checkout
 ```
 
-## Repository Structure
+Cloning defaults to HTTPS. Export `FESS_WORKSPACE_GIT_SSH=true` to use SSH remotes instead
+(`remote_base_ssh` in the set file).
+
+## Layout
 
 ```
 fess-workspace/
 ├── sets/                     # Repository set definitions
-│   ├── all.yaml             # Complete ecosystem (recommended)
-│   ├── core.yaml            # Core development only
-│   ├── plugins.yaml         # Core + plugins
+│   ├── all.yaml             # Complete ecosystem (48 repositories)
+│   ├── core.yaml            # Core components only
+│   ├── plugins.yaml         # core.yaml + data store / theme plugins
 │   └── custom.yaml.example  # Template for custom sets
-├── scripts/                 # Management scripts
-│   ├── clone.sh            # Clone repositories from set
-│   ├── build.sh            # Build in dependency order
-│   ├── status.sh           # Show repository status
-│   ├── sync.sh             # Fetch and pull updates
-│   ├── clean.sh            # Remove repositories
-│   └── lib/common.sh       # Shared utilities
+├── scripts/
+│   ├── clone.sh             # Clone or update repositories from a set
+│   ├── build.sh             # Build a set in dependency order
+│   ├── sync.sh              # Fetch and pull updates
+│   ├── status.sh            # Show git status of every checkout
+│   ├── clean.sh             # Clean build artifacts
+│   ├── release-branch.sh    # Create release branches and version-bump PRs
+│   ├── test-integration.sh  # Integration test entry point
+│   └── lib/
+│       ├── common.sh        # Logging, paths, prerequisite checks
+│       └── yaml_parser.sh   # Set-file parsing (yq), include resolution
 ├── repos/                   # Cloned repositories (gitignored)
-└── CLAUDE.md               # AI development instructions
+├── logs/build/              # Per-repository Maven build logs (gitignored)
+├── work/                    # Scratch/working directory (gitignored)
+├── docs/                    # Workspace-level notes and reports (gitignored)
+├── CLAUDE.md                # Instructions for AI-assisted development
+└── AGENTS.md                # Symlink to CLAUDE.md
 ```
 
-## Available Sets
+## Sets
 
-### all.yaml (Recommended Default)
+### `all.yaml` — complete ecosystem
 
-The complete Fess development ecosystem with all components, plugins, and tools:
+#### CodeLibs Libraries (`build_order` 1–2)
 
-#### Core Components
-| Repository | Description |
-|------------|-------------|
-| **fess-parent** | Maven parent POM with shared configuration |
-| **fess-crawler** | Web crawler engine for document collection |
-| **fess-crawler-playwright** | Modern browser-based crawler using Playwright |
-| **fess-suggest** | Search suggestion and auto-completion features |
-| **fess** | Main Fess search application |
+| Repository | Branch | Description |
+|------------|--------|-------------|
+| **corelib** | master | Core utility library |
+| **curl4j** | master | cURL-like Java HTTP client |
+| **java-saml** | main | Java SAML toolkit (SSO) |
+| **jcifs** | main | CIFS/SMB client library in pure Java |
+| **jhighlight** | master | Source code syntax highlighter |
+| **nekohtml** | master | HTML parser and tag balancer |
+| **spnego** | master | Integrated Windows Authentication (SSO) |
+| **fess-parent** | main | Maven parent POM / dependency management |
+| **fesen-httpclient** | main | HTTP client for OpenSearch |
 
-#### Data Store Connectors
-| Repository | Description |
-|------------|-------------|
-| **fess-ds-atlassian** | Confluence and Jira connector |
-| **fess-ds-box** | Box cloud storage connector |
-| **fess-ds-csv** | CSV file data source |
-| **fess-ds-db** | Database connector (JDBC) |
-| **fess-ds-dropbox** | Dropbox cloud storage connector |
-| **fess-ds-example** | Example data source template |
-| **fess-ds-git** | Git repository crawler |
-| **fess-ds-gsuite** | Google Workspace (G Suite) connector |
-| **fess-ds-json** | JSON file data source |
-| **fess-ds-microsoft365** | Microsoft 365 / Office 365 connector |
-| **fess-ds-salesforce** | Salesforce CRM connector |
-| **fess-ds-sharepoint** | Microsoft SharePoint connector |
-| **fess-ds-slack** | Slack workspace connector |
-| **fess-ds-wikipedia** | Wikipedia content crawler |
+#### Core Components (`build_order` 3–6)
 
-#### Extensions and Plugins
-| Repository | Description |
-|------------|-------------|
-| **fess-ingest-example** | Example ingest processor |
-| **fess-script-example** | Example script implementations |
-| **fess-script-ognl** | OGNL scripting support |
-| **fess-theme-simple** | Simple UI theme |
-| **fess-thumbnail-playwright** | Thumbnail generation using Playwright |
+| Repository | Branch | Description |
+|------------|--------|-------------|
+| **fess-crawler** | master | Crawler framework |
+| **fess-crawler-playwright** | main | Playwright-based browser crawler component |
+| **fess-suggest** | master | Suggestion / auto-completion library |
+| **fess** | master | The Fess search server web application |
 
-#### Web Applications
-| Repository | Description |
-|------------|-------------|
-| **fess-webapp-classic-api** | Classic API interface |
-| **fess-webapp-v1-api** | v1 API interface |
-| **fess-webapp-example** | Example web application |
-| **fess-webapp-mcp** | Model Context Protocol integration |
-| **fess-webapp-multimodal** | Multimodal search interface |
-| **fess-webapp-semantic-search** | Semantic search capabilities |
+#### Data Store Connectors (`build_order` 10)
 
-#### Infrastructure and Tools
-| Repository | Description |
-|------------|-------------|
-| **fess-kopf** | Elasticsearch/OpenSearch admin interface |
-| **docker-fess** | Docker containerization |
-| **fess-docs** | Documentation (build skipped) |
+| Repository | Branch | Description |
+|------------|--------|-------------|
+| **fess-ds-atlassian** | master | Confluence / Jira |
+| **fess-ds-box** | master | Box |
+| **fess-ds-csv** | master | CSV files |
+| **fess-ds-db** | master | Relational databases via JDBC |
+| **fess-ds-dropbox** | master | Dropbox |
+| **fess-ds-git** | master | Git repositories |
+| **fess-ds-gsuite** | master | Google Workspace |
+| **fess-ds-json** | master | JSON files |
+| **fess-ds-microsoft365** | master | Microsoft 365 (OneDrive, Teams, SharePoint, …) |
+| **fess-ds-salesforce** | master | Salesforce |
+| **fess-ds-sharepoint** | master | On-premise SharePoint |
+| **fess-ds-slack** | master | Slack |
+| **fess-ds-wikipedia** | main | Wikipedia dumps |
+| **fess-ds-example** | master | Template for new data store plugins |
 
-### core.yaml
+#### LLM Plugins (`build_order` 10)
 
-Minimal set for core Fess development:
-- fess-parent, fess-crawler, fess-crawler-playwright, fess-suggest, fess, docker-fess, fess-docs
+| Repository | Branch | Description |
+|------------|--------|-------------|
+| **fess-llm-ollama** | main | Ollama chat / embedding integration |
+| **fess-llm-openai** | main | OpenAI chat / embedding integration |
+| **fess-llm-gemini** | main | Google Gemini chat / embedding integration |
 
-### plugins.yaml
+#### WebApp and Other Plugins (`build_order` 10)
 
-Core components plus essential data store plugins:
-- Includes all from core.yaml
-- Adds key data store connectors (DB, CSV, JSON, Office365, etc.)
-- Includes theme and webapp plugins
+| Repository | Branch | Description |
+|------------|--------|-------------|
+| **fess-webapp-classic-api** | main | Classic search API |
+| **fess-webapp-v1-api** | main | v1 REST API |
+| **fess-webapp-mcp** | main | Model Context Protocol server |
+| **fess-webapp-multimodal** | main | CLIP-based multimodal (image) search |
+| **fess-webapp-example** | master | Template for new webapp plugins |
+| **fess-thumbnail-playwright** | main | Playwright-based thumbnail generation |
+| **fess-script-groovy** | main | Groovy script engine |
+| **fess-script-ognl** | main | OGNL script engine |
+| **fess-script-example** | main | Template for new script engines |
+| **fess-ingest-example** | main | Template for new ingest processors |
 
-## Script Usage
+#### Themes (`build_order` 10)
 
-### Clone Repositories
+| Repository | Branch | Description |
+|------------|--------|-------------|
+| **fess-theme-simple** | master | Simple UI theme (Maven plugin) |
+| **fess-themes** | main | Static theme collection (`skip_build`) |
+
+#### Tools and Infrastructure
+
+| Repository | Branch | Order | Description |
+|------------|--------|-------|-------------|
+| **fess-kopf** | main | 20 | OpenSearch admin UI (Vue 3 / Vite) |
+| **docker-fess** | master | 30 | Official Docker images and Compose files |
+| **fessctl** | main | 40 | Python CLI for the Fess Admin API |
+| **fess-test-ui** | main | 99 | Playwright/Python UI test suite (`skip_build`) |
+| **homebrew-tap** | main | 99 | Homebrew tap for CodeLibs tools (`skip_build`) |
+| **fess-docs** | master | 99 | Documentation sources (`skip_build`) |
+
+`build.sh` only runs Maven. Repositories without a `pom.xml` — `fess-kopf`, `docker-fess`,
+`fessctl`, plus the four `skip_build` entries — are reported as skipped and must be built with their
+own toolchain (npm, uv/pip, docker).
+
+### `core.yaml`
+
+Minimal set for core development: `fess-parent`, `fess-crawler`, `fess-crawler-playwright`,
+`fess-suggest`, `fess`, `docker-fess`, `fess-docs`.
+
+### `plugins.yaml`
+
+`includes: core.yaml` plus data store connectors (`fess-ds-db`, `-csv`, `-json`, `-office365`,
+`-salesforce`, `-slack`, `-box`, `-dropbox`, `-s3`, `-gsuite`, `-atlassian`, `-gitbucket`, `-git`)
+and `fess-theme-simple`.
+
+## Script Reference
+
+### `clone.sh <set> [options]`
+
+Clones every repository in the set. For an existing checkout it fetches, switches to the configured
+branch (stashing uncommitted changes first) and fast-forwards — falling back to
+`git reset --hard origin/<branch>` when a fast-forward is not possible.
+
+| Option | Effect |
+|--------|--------|
+| `--force`, `-f` | Remove the existing directory and re-clone |
+| `--verbose`, `-v` | Verbose output |
+
+### `build.sh <set> [options]`
+
+Runs `mvn install` per repository in ascending `build_order`, and **stops at the first failure**.
+
+| Option | Effect |
+|--------|--------|
+| `--with-tests` | Run tests (`mvn install`) |
+| `--skip-tests` | Skip tests — the default (`-DskipTests`) |
+| `--clean` | `mvn clean install` |
+| `--offline` | Offline build (`mvn -o`) |
+| `--verbose`, `-v` | Stream Maven output as well as logging it |
+
+Output goes to `logs/build/<repo>.log`. Without `--verbose` that file is the only place Maven output
+lands — check it first when a build fails.
+
+### `sync.sh [set] [options]`
+
+Fetches (`--all --prune`) and pulls. With no set name it syncs every checkout under `repos/`.
+Repositories with local changes are skipped unless `--force` is given.
+
+| Option | Effect |
+|--------|--------|
+| `--fetch-only` | Fetch without pulling |
+| `--force` | Stash local changes, pull, then pop the stash |
+| `--verbose`, `-v` | Verbose output |
+
+### `status.sh [options]`
+
+Git status for every checkout under `repos/`: branch, short commit, ahead/behind counts and the
+number of modified files. Takes no set name.
+
+| Option | Effect |
+|--------|--------|
+| `--short`, `-s` | One line per repository |
+| `--verbose`, `-v` | Also show the remote URL and a sample of changed files |
+
+### `clean.sh [options]`
+
+Removes build artifacts (it does **not** delete repositories). The build system is detected per
+repository: `pom.xml` → `mvn clean`; `package.json` → remove `node_modules`, `coverage`, `_site`;
+`pyproject.toml` → remove `__pycache__`, `.pytest_cache`, `dist`, `build`, `*.egg-info`.
+
+| Option | Effect |
+|--------|--------|
+| `--target` | Quick clean — delete output directories directly, without invoking mvn/npm |
+
+### `release-branch.sh <set> -r <branch> -n <version> [options]`
+
+Creates a release branch in each repository of the set and opens a PR bumping the main branch to the
+next development version. Requires cloned repositories and an authenticated `gh`.
+
+| Option | Effect |
+|--------|--------|
+| `--release-branch`, `-r` | Release branch to create (e.g. `15.8.x`) — required |
+| `--new-version`, `-n` | New main-branch version (e.g. `15.9.0-SNAPSHOT`) — required |
+| `--dry-run` | Report what would happen without changing anything |
+| `--skip-existing` | Skip repositories that already have the release branch (default) |
+| `--force-version` | Bump the version even when the release branch exists |
+| `--verbose`, `-v` | Verbose output |
+
+### `test-integration.sh [options]`
+
+Integration test entry point. Brings up `env/docker-compose.yml` when present and checks for built
+Fess artifacts. The actual test commands are still a placeholder.
+
+| Option | Effect |
+|--------|--------|
+| `--skip-docker` | Do not start Docker services |
+| `--verbose`, `-v` | Verbose output |
+
+Every script also accepts `--help` / `-h`.
+
+## Build Notes
+
+Build order: libraries (`corelib`, `curl4j`, `java-saml`, `jcifs`, `jhighlight`, `nekohtml`,
+`spnego`, `fess-parent`) → `fesen-httpclient` → `fess-crawler` → `fess-crawler-playwright` →
+`fess-suggest` → `fess` → plugins and themes → `fess-kopf` → `docker-fess` → `fessctl` →
+`fess-test-ui` / `fess-docs`.
+
+- **Building a Fess binary requires `mvn antrun:run` before `mvn package`.** The antrun plugin has no
+  `<executions>`/`<phase>`, so the normal lifecycle never triggers it. It downloads DBFlute, modules,
+  plugins, kopf and the `WEB-INF/env/*/lib` jars. Skipping it still produces a bootable WAR/ZIP, but
+  every child-process job (crawler, thumbnail, suggest, chunk) dies at DI container initialization
+  with `NoClassDefFoundError: jakarta/annotation/PostConstruct`.
+- `repos/fess` uses `<packaging>war</packaging>`. To install it as a jar for plugin compilation,
+  temporarily switch the packaging to `jar`, run `mvn clean install -DskipTests`, then revert.
+- Run `mvn formatter:format && mvn license:format` in each repository before committing.
+
+## Custom Sets
 
 ```bash
-./scripts/clone.sh all              # Clone all repositories (recommended)
-./scripts/clone.sh core             # Clone core components only
-./scripts/clone.sh plugins          # Clone core + plugins
-./scripts/clone.sh all --force      # Force re-clone existing repos
+cp sets/custom.yaml.example sets/my-set.yaml
 ```
-
-### Build Projects
-
-```bash
-./scripts/build.sh all              # Build all (skip tests)
-./scripts/build.sh all --with-tests # Build all with tests
-./scripts/build.sh all --clean      # Clean build
-./scripts/build.sh core             # Build core components only
-```
-
-**Build Order**: Projects build automatically in dependency order (fess-parent → fess-crawler → fess-suggest → fess → plugins)
-
-### Repository Management
-
-```bash
-./scripts/status.sh                 # Show all repository status
-./scripts/status.sh --short         # Compact output
-./scripts/status.sh --verbose       # Include remote information
-
-./scripts/sync.sh all               # Sync all repositories
-./scripts/sync.sh core              # Sync core set only  
-./scripts/sync.sh --fetch-only      # Fetch without pulling
-
-./scripts/clean.sh                  # Remove all repos (with confirmation)
-./scripts/clean.sh --yes            # Skip confirmation
-./scripts/clean.sh --target         # Clean Maven target/ directories only
-```
-
-## Development Workflow
-
-### Initial Setup
-
-```bash
-# Clone workspace
-git clone git@github.com:codelibs/fess-workspace.git
-cd fess-workspace
-
-# Set up complete environment
-./scripts/clone.sh all
-./scripts/build.sh all
-```
-
-### Daily Development
-
-```bash
-# Update to latest
-./scripts/sync.sh all
-
-# Work on specific component
-cd repos/fess
-git checkout -b feature/my-enhancement
-
-# Make changes...
-# Build and test
-cd ../../
-./scripts/build.sh all --with-tests
-
-# Commit and create PR
-cd repos/fess
-git commit -m "Add new feature"
-git push origin feature/my-enhancement
-# Create pull request on GitHub
-```
-
-### Feature Development
-
-```bash
-# Create feature branch in target repository
-cd repos/fess-ds-slack
-git checkout -b feature/improved-api
-
-# Develop feature...
-# Test locally
-mvn test
-
-# Build entire ecosystem to ensure compatibility
-cd ../../ 
-./scripts/build.sh all
-
-# Submit changes
-cd repos/fess-ds-slack
-git push origin feature/improved-api
-```
-
-## Custom Development Sets
-
-Create custom sets for specific development needs:
-
-```bash
-cp sets/custom.yaml.example sets/my-project.yaml
-```
-
-Edit `sets/my-project.yaml`:
 
 ```yaml
-name: my-project
-description: "Custom set for specific project needs"
+name: my-set
+description: "Custom development set"
 
 defaults:
-  remote_base: git@github.com:codelibs
+  remote_base: https://github.com/codelibs
+  remote_base_ssh: git@github.com:codelibs
   branch: master
 
+# Optional: pull in another set
+includes:
+  - core.yaml
+
 repositories:
-  - name: fess
-    build_order: 1
-  - name: fess-ds-slack  
-    build_order: 2
-  - name: fess-theme-simple
-    build_order: 3
+  - name: fess-ds-slack
+    build_order: 10
+
+  # Per-repository branch override
+  - name: fess-webapp-mcp
+    branch: main
+    build_order: 10
+
+  # Fork or arbitrary remote
+  - name: my-fess-fork
+    remote: https://github.com/myuser/fess.git
+    build_order: 6
+
+  # Present in repos/ but not built
+  - name: fess-docs
+    build_order: 99
+    skip_build: true
 ```
 
-Use your custom set:
+Then pass the set name to any script:
 
 ```bash
-./scripts/clone.sh my-project
-./scripts/build.sh my-project
+./scripts/clone.sh my-set
+./scripts/build.sh my-set
 ```
 
-## HTTPS Alternative
+Includes are resolved recursively, circular includes are ignored, and duplicate repositories are
+de-duplicated before sorting by `build_order`.
 
-If SSH access is not configured, switch to HTTPS. Edit any set file:
+## Gotchas
 
-```yaml
-defaults:
-  # remote_base: git@github.com:codelibs  # SSH (commented out)
-  remote_base: https://github.com/codelibs  # HTTPS
-```
+- **The default branch is `master`**, not `main`. `main` is a per-repository override — see the
+  branch columns above. `repos/fess` has no `main` branch at all.
+- `repos/`, `logs/`, `work/`, `docs/` and `target/` are gitignored local scratch, not workspace
+  source. Do not `git add` them.
+- `repos/` may contain checkouts that are no longer listed in any set — after a repository is
+  dropped from `sets/*.yaml`, its clone stays behind. The scripts skip such directories
+  silently, so they never sync or build; remove them by hand.
+- `plugins.yaml` still lists `fess-ds-office365`, `fess-ds-s3` and `fess-ds-gitbucket`, which are not
+  part of `all.yaml`; clone them only if those upstream repositories still exist.
 
-## Integration Testing
+## AI-Assisted Development
 
-```bash
-# Run integration tests (requires Docker)
-./scripts/test-integration.sh
-
-# Test specific components
-cd repos/fess
-mvn integration-test
-```
-
-## Troubleshooting
-
-### Common Issues
-
-**Build Failures**: Ensure build order is respected. Use `./scripts/build.sh all --clean` for fresh build.
-
-**Missing Dependencies**: Verify yq is installed (`brew install yq` on macOS).
-
-**Clone Errors**: Check SSH keys or switch to HTTPS in set configuration.
-
-**Memory Issues**: Increase Maven memory: `export MAVEN_OPTS="-Xmx2g -XX:MaxMetaspaceSize=512m"`
-
-### Getting Help
-
-```bash
-./scripts/clone.sh --help
-./scripts/build.sh --help
-./scripts/status.sh --help
-```
+`CLAUDE.md` (and its `AGENTS.md` symlink) documents the workspace conventions. The `.claude/`
+directory ships project agents (`fess-developer`, `fess-troubleshooter`, `lastaflute-expert`,
+`dbflute-expert`, `opensearch-expert`) and skills covering configuration, i18n, testing, release,
+documentation review, dependency updates and live-server verification.
 
 ## Tech Stack
 
-- **Java 21+** / **Maven 3.8+**: Build system
-- **OpenSearch**: Search engine backend
-- **LastaFlute**: Web application framework
-- **Playwright**: Modern web crawling
-- **Docker**: Containerization and testing
+- **Java 21+** / **Maven 3.8+** — build system
+- **OpenSearch** — search backend
+- **LastaFlute** / **DBFlute** — web application framework and ORM
+- **Playwright** — browser-based crawling, thumbnails and UI tests
+- **Vue 3** / **Vite** — fess-kopf admin UI
+- **Python** — fessctl and the UI test suite
+- **Docker** — containerization and integration testing
 
 ## Contributing
 
-1. Fork the repository
-2. Create your feature branch: `git checkout -b feature/amazing-feature`
-3. Commit your changes: `git commit -m 'Add amazing feature'`
-4. Push to the branch: `git push origin feature/amazing-feature`  
-5. Open a Pull Request
+Work happens in the individual repositories under `repos/`, each of which has its own contribution
+guidelines. For changes to this workspace itself:
+
+1. Create a feature branch
+2. Make your change
+3. Open a pull request against `main`
 
 ## License
 

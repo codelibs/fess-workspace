@@ -169,6 +169,17 @@ After creating the draft, provide the user with:
 - A reminder that assets need to be uploaded manually
 - A reminder to review and publish when ready
 
+### Step 10: Post-publication site check
+
+Once the documentation for the new version is published, run `docs/site-noindex/verify.sh` and add
+the new version to the list it checks. It asserts the publication matrix — which paths must stay
+indexable and which must carry `noindex` — and the version list does not update itself, so a new
+release silently goes unchecked until it is added.
+
+`docs/site-noindex/` is a standalone git repository with no remote: it exists only in this
+workspace and `docs/` is gitignored, so it is never restored by a clone. Its test suite must run
+in the Debian container `run-tests.sh` starts; BSD `sed` on macOS cannot execute it.
+
 ## Error Handling
 
 - If `gh` is not authenticated: instruct the user to run `gh auth login`

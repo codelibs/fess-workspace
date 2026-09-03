@@ -154,10 +154,6 @@ repositories:
     branch: main
     build_order: 10
 
-  - name: fess-webapp-semantic-search
-    branch: main
-    build_order: 10
-
   - name: fess-kopf
     branch: main
     build_order: 20
