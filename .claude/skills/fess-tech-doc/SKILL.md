@@ -20,6 +20,8 @@ Understand the Fess features to cover by reading source code — never write abo
 - Data store plugins: `repos/fess-ds-*/` — each repo = one data source connector
 - LLM plugins: `repos/fess-llm-*/` — RAG/AI integration (OpenAI, Gemini, Ollama)
 - Webapp plugins: `repos/fess-webapp-*/` — web extensions (MCP server, etc.)
+- SSO plugins: `repos/fess-sso-*/` — one authenticator each (`sso.type=saml`, `spnego`, `entraid`, `oic`)
+- Storage plugins: `repos/fess-storage-*/` — object storage clients (`storage.type`, `s3:`/`gcs:` crawling)
 - Existing docs: `repos/fess-docs/ja/{version}/admin/`, `repos/fess-docs/ja/{version}/config/`
 
 **Verification checklist:**

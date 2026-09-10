@@ -26,8 +26,9 @@ Wave 1 : fess-parent                         (bumps project version + fess*.vers
 Wave 2 : fess-suggest, fess-crawler          (independent of each other; both consumed by downstream)
 Wave 3 : fess-crawler-playwright             (depends on fess-crawler)
 Wave 4 : fess                                (depends on parent + suggest + crawler + crawler-playwright)
-Wave 5 : every remaining plugin              (fess-ds-*, fess-llm-*, fess-theme-*, fess-webapp-*,
-                                              fess-script-*, fess-ingest-*, fess-thumbnail-playwright)
+Wave 5 : every remaining plugin              (fess-ds-*, fess-llm-*, fess-sso-*, fess-storage-*,
+                                              fess-theme-*, fess-webapp-*, fess-script-*,
+                                              fess-ingest-*, fess-thumbnail-playwright)
 ```
 
 After opening the PRs for a wave, tell the user which PRs are open, then **wait**. The user merges them and deploys SNAPSHOTs; they will signal when to proceed.

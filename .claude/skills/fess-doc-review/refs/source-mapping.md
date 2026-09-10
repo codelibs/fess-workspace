@@ -2,15 +2,21 @@
 
 Map each doc file to its primary source reference.
 
+15.9 moved the four SSO authenticators into `fess-sso-*` repositories and the S3/GCS storage clients
+into `fess-storage-*`; the rows below point at those. Reviewing 15.8 or earlier docs, read the same
+classes under `repos/fess/src/main/java/org/codelibs/fess/sso/` and `.../storage/` on the `15.8.x`
+branch instead.
+
 | Doc Topic | Primary Source |
 |-----------|---------------|
 | Core config properties | `repos/fess/src/main/resources/fess_config.properties` |
 | Config constants/defaults | `repos/fess/src/main/java/org/codelibs/fess/mylasta/direction/FessConfig.java` |
 | Application constants | `repos/fess/src/main/java/org/codelibs/fess/Constants.java` |
-| SSO (SAML) | `repos/fess/src/main/java/org/codelibs/fess/sso/saml/SamlAuthenticator.java`, `SamlCredential.java` (attribute mapping), `FessProp.java` (permission/behavior properties) |
-| SSO (OIDC) | `repos/fess/src/main/java/org/codelibs/fess/sso/oic/OpenIdConnectAuthenticator.java`, `repos/fess/src/main/java/org/codelibs/fess/app/web/base/login/OpenIdConnectCredential.java` (user ID/groups/roles extraction), `FessProp.java` (permission/behavior properties) |
-| SSO (Entra ID) | `repos/fess/src/main/java/org/codelibs/fess/sso/entraid/EntraIdAuthenticator.java`, `FessProp.java` (permission/behavior properties e.g. `entraid.permission.fields`, `entraid.use.ds`) |
-| SSO (SPNEGO) | `repos/fess/src/main/java/org/codelibs/fess/sso/spnego/SpnegoAuthenticator.java`, `FessProp.java` (permission/behavior properties) |
+| SSO (type dispatch, missing plugin) | `repos/fess/src/main/java/org/codelibs/fess/sso/SsoManager.java` — resolves the authenticator as `<sso.type>Authenticator`, maps the legacy `aad` to `entraid`, and warns which plugin to install; `FessProp.java` holds `sso.type` |
+| SSO (SAML) | `repos/fess-sso-saml/src/main/java/org/codelibs/fess/sso/saml/SamlAuthenticator.java`, `SamlCredential.java` (attribute mapping); `saml.*` keys come from `WEB-INF/conf/system.properties` |
+| SSO (OIDC) | `repos/fess-sso-oidc/src/main/java/org/codelibs/fess/sso/oic/OpenIdConnectAuthenticator.java`, `OpenIdConnectCredential.java` (user ID/groups/roles extraction — the credential moved out of `org.codelibs.fess.app.web.base.login`). The type stays `sso.type=oic` |
+| SSO (Entra ID) | `repos/fess-sso-entraid/src/main/java/org/codelibs/fess/sso/entraid/EntraIdAuthenticator.java`, `EntraIdCredential.java`; `FessProp.java` still owns `entraid.permission.fields` and `entraid.use.ds`, each with an `aad.*` fallback |
+| SSO (SPNEGO) | `repos/fess-sso-spnego/src/main/java/org/codelibs/fess/sso/spnego/SpnegoAuthenticator.java` — the `SpnegoConfig.getInitParameter()` switch is the authoritative list of `spnego.*` keys and their defaults |
 | API endpoints | `repos/fess/src/main/java/org/codelibs/fess/api/` |
 | LLM/RAG chat (core) | `repos/fess/src/main/java/org/codelibs/fess/llm/AbstractLlmClient.java` |
 | LLM/RAG chat (session/history) | `repos/fess/src/main/java/org/codelibs/fess/chat/ChatClient.java`, `ChatSessionManager.java` |
@@ -23,6 +29,9 @@ Map each doc file to its primary source reference.
 | Crawler clients (S3) | `repos/fess-crawler/fess-crawler/src/main/java/org/codelibs/fess/crawler/client/s3/S3Client.java` |
 | Crawler clients (GCS) | `repos/fess-crawler/fess-crawler/src/main/java/org/codelibs/fess/crawler/client/gcs/GcsClient.java` |
 | Crawler clients (Storage) | `repos/fess-crawler/fess-crawler/src/main/java/org/codelibs/fess/crawler/client/storage/StorageClient.java` |
+| Storage clients (registry, config) | `repos/fess/src/main/java/org/codelibs/fess/storage/StorageClientFactory.java` — resolves `<storage.type>StorageClient`; `StorageType.java` (endpoint auto-detection), `FessProp.java` (`storage.*` accessors), `AdminStorageAction.java` (admin UI) |
+| Storage clients (S3) | `repos/fess-storage-s3/src/main/java/org/codelibs/fess/storage/s3/S3StorageClient.java`; `fess_storage++.xml` registers `s3StorageClient` and `s3_compatStorageClient`, and `crawler/client++.xml` registers the `s3:` crawler client via `S3ClientCreator` |
+| Storage clients (GCS) | `repos/fess-storage-gcs/src/main/java/org/codelibs/fess/storage/gcs/GcsStorageClient.java`; `fess_storage++.xml` registers `gcsStorageClient`, and `crawler/client++.xml` registers the `gcs:` crawler client via `GcsClientCreator` |
 | Datastore connectors (implementations) | `repos/fess-ds-*/src/main/java/` — each plugin's DataStore subclass(es) |
 | Datastore connectors (client/auth params) | `repos/fess-ds-*/src/main/java/` — plugin's `*Client.java` or `*Helper.java` classes (e.g., `Microsoft365Client.java`, `BoxClient.java`) define shared authentication and connection parameters (`proxy_*`, `cache_size`, `max_content_length`, etc.) that are common to all connectors in the plugin but not declared in the DataStore classes |
 | Datastore handler registration | `repos/fess-ds-*/src/main/resources/fess_ds++.xml` — `<component>` entries define registered handler names |
