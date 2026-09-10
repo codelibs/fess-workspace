@@ -111,6 +111,30 @@ repositories:
     branch: main
     build_order: 10
 
+  - name: fess-sso-entraid
+    branch: main
+    build_order: 10
+
+  - name: fess-sso-oidc
+    branch: main
+    build_order: 10
+
+  - name: fess-sso-saml
+    branch: main
+    build_order: 10
+
+  - name: fess-sso-spnego
+    branch: main
+    build_order: 10
+
+  - name: fess-storage-gcs
+    branch: main
+    build_order: 10
+
+  - name: fess-storage-s3
+    branch: main
+    build_order: 10
+
   - name: fess-themes
     branch: main
     build_order: 10

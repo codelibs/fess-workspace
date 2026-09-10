@@ -54,6 +54,22 @@ docker-fess -> fessctl -> fess-test-ui, fess-docs
   1. Change `repos/fess/pom.xml` packaging to `jar`
   2. `cd repos/fess && mvn clean install -DskipTests`
   3. Revert packaging back to `war`
+- **15.9 moves the S3/GCS storage clients and the four SSO authenticators out of `repos/fess`**
+  into `fess-storage-{s3,gcs}` and `fess-sso-{saml,spnego,entraid,oidc}`. The storage half is
+  already on `master`, so `S3StorageClient` and `GcsStorageClient` are only on `15.8.x` and earlier;
+  the SSO half is fess#3430, so until that merges `repos/fess` carries the four authenticators too.
+  Core keeps the extension point and the admin UI: `StorageClientFactory` resolves
+  `<storage.type>StorageClient`, `SsoManager` resolves `<sso.type>Authenticator`, `FessProp` keeps
+  `sso.type` and the `storage.*` accessors, and the General screen still offers all four SSO types
+  (a plugin cannot supply a JSP). Each plugin reads its own `saml.*` / `spnego.*` /
+  `entraid.*` / `oic.*` keys from `WEB-INF/conf/system.properties`. `sso.type=oic` is served by
+  `fess-sso-oidc` - the one place a type and its repo name differ.
+- **Build a `fess-sso-*` / `fess-storage-*` plugin against the same Fess minor version it is
+  installed into.** An SSO plugin in an older war is not a silent mismatch: core ships its own
+  `fess_sso++.xml` up to 15.8, LastaDi merges every `++` file on the class path, and the pair
+  registers the same component name twice - `container.init()` still succeeds and `getComponent()`
+  then throws `TooManyRegistrationComponentException`. Storage has no counterpart before 15.9:
+  `fess_storage.xml` and the `<storage.type>StorageClient` lookup are both new in 15.9.
 - Run `mvn formatter:format && mvn license:format` in each repo separately
 - Custom repo sets: copy `sets/custom.yaml.example` to `sets/my-set.yaml`, then pass `my-set` to any script (e.g. `./scripts/build.sh my-set`)
 
@@ -61,7 +77,8 @@ docker-fess -> fessctl -> fess-test-ui, fess-docs
 
 - **Default branch is `master`**, not `main` (`defaults.branch` in `sets/*.yaml`). `main` is a
   per-repo override - incl. fess-parent, fess-themes, java-saml, jcifs, fesen-httpclient,
-  fess-crawler-playwright. `repos/fess` has no `main` branch at all.
+  fess-crawler-playwright, and every `fess-sso-*` / `fess-storage-*`. `repos/fess` has no `main`
+  branch at all.
 - `FESS_WORKSPACE_GIT_SSH=true` switches clone/sync remotes from HTTPS to SSH.
 - `build.sh` writes `logs/build/<repo>.log`; without `--verbose` Maven output goes only there.
   Check that file first when a build fails.
@@ -73,8 +90,10 @@ docker-fess -> fessctl -> fess-test-ui, fess-docs
 ## Code Reference
 
 Repo naming: `fess` (app), `fess-crawler*` (crawlers), `fess-suggest`, `fess-parent` (dependency
-BOM), `fess-ds-*` (data stores), `fess-llm-*`, `fess-webapp-*` (plugins), `fess-theme*` /
-`fess-themes` (themes); the rest are CodeLibs libraries.
+BOM), `fess-ds-*` (data stores), `fess-llm-*`, `fess-webapp-*` (plugins), `fess-sso-*` (SSO
+authenticators), `fess-storage-*` (object storage clients), `fess-theme*` / `fess-themes` (themes);
+the rest are CodeLibs libraries. A plugin repo's prefix is also its `PluginHelper.ArtifactType`, so
+a new plugin family means a new entry there (`STORAGE` and `SSO` were added in 15.9).
 
 See `sets/*.yaml` for full repository listings (`all.yaml`, `core.yaml`, `plugins.yaml`).
 

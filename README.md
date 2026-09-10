@@ -40,7 +40,7 @@ Cloning defaults to HTTPS. Export `FESS_WORKSPACE_GIT_SSH=true` to use SSH remot
 ```
 fess-workspace/
 ├── sets/                     # Repository set definitions
-│   ├── all.yaml             # Complete ecosystem (48 repositories)
+│   ├── all.yaml             # Complete ecosystem (54 repositories)
 │   ├── core.yaml            # Core components only
 │   ├── plugins.yaml         # core.yaml + data store / theme plugins
 │   └── custom.yaml.example  # Template for custom sets
@@ -117,6 +117,28 @@ fess-workspace/
 | **fess-llm-openai** | main | OpenAI chat / embedding integration |
 | **fess-llm-gemini** | main | Google Gemini chat / embedding integration |
 
+#### Storage Plugins (`build_order` 10)
+
+| Repository | Branch | Description |
+|------------|--------|-------------|
+| **fess-storage-s3** | main | Amazon S3 and S3-compatible object storage (`storage.type=s3`, `s3:` crawling) |
+| **fess-storage-gcs** | main | Google Cloud Storage (`storage.type=gcs`, `gcs:` crawling) |
+
+#### SSO Plugins (`build_order` 10)
+
+| Repository | Branch | Description |
+|------------|--------|-------------|
+| **fess-sso-saml** | main | SAML 2.0 (`sso.type=saml`) |
+| **fess-sso-spnego** | main | Integrated Windows Authentication (`sso.type=spnego`) |
+| **fess-sso-entraid** | main | Microsoft Entra ID (`sso.type=entraid`, and the legacy `aad`) |
+| **fess-sso-oidc** | main | OpenID Connect — the type is `sso.type=oic`, not `oidc` |
+
+Both groups carry features that were part of the Fess distribution up to 15.8. From 15.9 core keeps
+only the extension point — `SsoManager` resolving `<sso.type>Authenticator`, `StorageClientFactory`
+resolving `<storage.type>StorageClient` — and the implementation, plus the SDK it needs, ships as
+one of these plugins. `fess-storage-*` additionally registers the matching `s3:` / `gcs:` crawler
+client through `crawlerClientCreator`; that client class itself stays in `fess-crawler`.
+
 #### WebApp and Other Plugins (`build_order` 10)
 
 | Repository | Branch | Description |
@@ -163,7 +185,8 @@ Minimal set for core development: `fess-parent`, `fess-crawler`, `fess-crawler-p
 
 `includes: core.yaml` plus data store connectors (`fess-ds-db`, `-csv`, `-json`, `-office365`,
 `-salesforce`, `-slack`, `-box`, `-dropbox`, `-s3`, `-gsuite`, `-atlassian`, `-gitbucket`, `-git`)
-and `fess-theme-simple`.
+and `fess-theme-simple`. It covers data stores only — the LLM, webapp, script, storage and SSO
+plugins are in `all.yaml`.
 
 ## Script Reference
 
@@ -264,6 +287,11 @@ Build order: libraries (`corelib`, `curl4j`, `java-saml`, `jcifs`, `jhighlight`,
   with `NoClassDefFoundError: jakarta/annotation/PostConstruct`.
 - `repos/fess` uses `<packaging>war</packaging>`. To install it as a jar for plugin compilation,
   temporarily switch the packaging to `jar`, run `mvn clean install -DskipTests`, then revert.
+- **A `fess-sso-*` or `fess-storage-*` plugin has to match the Fess minor version it is installed
+  into.** Up to 15.8 core declares the four authenticators in its own `fess_sso++.xml`, and LastaDi
+  merges every `++` file on the class path, so a 15.9 SSO plugin on an older war registers the same
+  component name twice: the container still initializes and the lookup then throws
+  `TooManyRegistrationComponentException`.
 - Run `mvn formatter:format && mvn license:format` in each repository before committing.
 
 ## Custom Sets
