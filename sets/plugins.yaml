@@ -5,7 +5,7 @@ defaults:
   remote_base: https://github.com/codelibs
   # SSH (used when FESS_WORKSPACE_GIT_SSH=true)
   remote_base_ssh: git@github.com:codelibs
-  branch: master
+  branch: main
 
 includes:
   - core.yaml

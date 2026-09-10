@@ -156,9 +156,16 @@ get_default_branch() {
     local repo_path="$1"
     pushd "${repo_path}" > /dev/null
 
-    if git show-ref --verify --quiet refs/heads/main; then
+    # Resolve from the remote: a local checkout can still carry a stale branch
+    # name after the remote default has been renamed, and picking that name here
+    # makes every later "git pull origin <name>" fail on a ref that is gone.
+    local head_ref
+    head_ref=$(git symbolic-ref --quiet --short refs/remotes/origin/HEAD 2>/dev/null)
+    if [ -n "${head_ref}" ]; then
+        echo "${head_ref#origin/}"
+    elif git show-ref --verify --quiet refs/remotes/origin/main; then
         echo "main"
-    elif git show-ref --verify --quiet refs/heads/master; then
+    elif git show-ref --verify --quiet refs/remotes/origin/master; then
         echo "master"
     else
         echo "main"  # fallback

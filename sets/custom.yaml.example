@@ -14,7 +14,7 @@ defaults:
   remote_base: git@github.com:codelibs
   # HTTPS alternative (uncomment and comment out SSH):
   # remote_base: https://github.com/codelibs
-  branch: master
+  branch: main
 
 # Include other sets (optional)
 # includes:

@@ -33,7 +33,7 @@ yaml_get_remote_base() {
 # Get default branch
 yaml_get_default_branch() {
     local set_file="$1"
-    yq -r '.defaults.branch // "master"' "${set_file}"
+    yq -r '.defaults.branch // "main"' "${set_file}"
 }
 
 # Get list of included set files
