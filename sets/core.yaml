@@ -5,18 +5,16 @@ defaults:
   remote_base: https://github.com/codelibs
   # SSH (used when FESS_WORKSPACE_GIT_SSH=true)
   remote_base_ssh: git@github.com:codelibs
-  branch: master
+  branch: main
 
 repositories:
   - name: fess-parent
-    branch: main
     build_order: 1
 
   - name: fess-crawler
     build_order: 2
 
   - name: fess-crawler-playwright
-    branch: main
     build_order: 3
 
   - name: fess-suggest

@@ -5,7 +5,7 @@ defaults:
   remote_base: https://github.com/codelibs
   # SSH (used when FESS_WORKSPACE_GIT_SSH=true)
   remote_base_ssh: git@github.com:codelibs
-  branch: master
+  branch: main
 
 repositories:
   - name: corelib
@@ -15,15 +15,12 @@ repositories:
     build_order: 1
 
   - name: fesen-httpclient
-    branch: main
     build_order: 2
 
   - name: java-saml
-    branch: main
     build_order: 1
 
   - name: jcifs
-    branch: main
     build_order: 1
 
   - name: jhighlight
@@ -36,14 +33,12 @@ repositories:
     build_order: 1
 
   - name: fess-parent
-    branch: main
     build_order: 1
 
   - name: fess-crawler
     build_order: 3
 
   - name: fess-crawler-playwright
-    branch: main
     build_order: 4
 
   - name: fess-suggest
@@ -92,51 +87,39 @@ repositories:
     build_order: 10
 
   - name: fess-ds-wikipedia
-    branch: main
     build_order: 10
 
   - name: fess-ingest-example
-    branch: main
     build_order: 10
 
   - name: fess-script-example
-    branch: main
     build_order: 10
 
   - name: fess-script-groovy
-    branch: main
     build_order: 10
 
   - name: fess-script-ognl
-    branch: main
     build_order: 10
 
   - name: fess-sso-entraid
-    branch: main
     build_order: 10
 
   - name: fess-sso-oidc
-    branch: main
     build_order: 10
 
   - name: fess-sso-saml
-    branch: main
     build_order: 10
 
   - name: fess-sso-spnego
-    branch: main
     build_order: 10
 
   - name: fess-storage-gcs
-    branch: main
     build_order: 10
 
   - name: fess-storage-s3
-    branch: main
     build_order: 10
 
   - name: fess-themes
-    branch: main
     build_order: 10
     skip_build: true
 
@@ -144,58 +127,46 @@ repositories:
     build_order: 10
 
   - name: fess-thumbnail-playwright
-    branch: main
     build_order: 10
 
   - name: fess-webapp-classic-api
-    branch: main
     build_order: 10
 
   - name: fess-webapp-v1-api
-    branch: main
     build_order: 10
 
   - name: fess-webapp-example
     build_order: 10
 
   - name: fess-webapp-mcp
-    branch: main
     build_order: 10
 
   - name: fess-llm-ollama
-    branch: main
     build_order: 10
 
   - name: fess-llm-openai
-    branch: main
     build_order: 10
 
   - name: fess-llm-gemini
-    branch: main
     build_order: 10
 
   - name: fess-webapp-multimodal
-    branch: main
     build_order: 10
 
   - name: fess-kopf
-    branch: main
     build_order: 20
 
   - name: docker-fess
     build_order: 30
 
   - name: fessctl
-    branch: main
     build_order: 40
 
   - name: fess-test-ui
-    branch: main
     build_order: 99
     skip_build: true
 
   - name: homebrew-tap
-    branch: main
     build_order: 99
     skip_build: true
 

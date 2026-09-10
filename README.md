@@ -71,13 +71,13 @@ fess-workspace/
 
 | Repository | Branch | Description |
 |------------|--------|-------------|
-| **corelib** | master | Core utility library |
-| **curl4j** | master | cURL-like Java HTTP client |
+| **corelib** | main | Core utility library |
+| **curl4j** | main | cURL-like Java HTTP client |
 | **java-saml** | main | Java SAML toolkit (SSO) |
 | **jcifs** | main | CIFS/SMB client library in pure Java |
-| **jhighlight** | master | Source code syntax highlighter |
-| **nekohtml** | master | HTML parser and tag balancer |
-| **spnego** | master | Integrated Windows Authentication (SSO) |
+| **jhighlight** | main | Source code syntax highlighter |
+| **nekohtml** | main | HTML parser and tag balancer |
+| **spnego** | main | Integrated Windows Authentication (SSO) |
 | **fess-parent** | main | Maven parent POM / dependency management |
 | **fesen-httpclient** | main | HTTP client for OpenSearch |
 
@@ -85,29 +85,29 @@ fess-workspace/
 
 | Repository | Branch | Description |
 |------------|--------|-------------|
-| **fess-crawler** | master | Crawler framework |
+| **fess-crawler** | main | Crawler framework |
 | **fess-crawler-playwright** | main | Playwright-based browser crawler component |
-| **fess-suggest** | master | Suggestion / auto-completion library |
-| **fess** | master | The Fess search server web application |
+| **fess-suggest** | main | Suggestion / auto-completion library |
+| **fess** | main | The Fess search server web application |
 
 #### Data Store Connectors (`build_order` 10)
 
 | Repository | Branch | Description |
 |------------|--------|-------------|
-| **fess-ds-atlassian** | master | Confluence / Jira |
-| **fess-ds-box** | master | Box |
-| **fess-ds-csv** | master | CSV files |
-| **fess-ds-db** | master | Relational databases via JDBC |
-| **fess-ds-dropbox** | master | Dropbox |
-| **fess-ds-git** | master | Git repositories |
-| **fess-ds-gsuite** | master | Google Workspace |
-| **fess-ds-json** | master | JSON files |
-| **fess-ds-microsoft365** | master | Microsoft 365 (OneDrive, Teams, SharePoint, …) |
-| **fess-ds-salesforce** | master | Salesforce |
-| **fess-ds-sharepoint** | master | On-premise SharePoint |
-| **fess-ds-slack** | master | Slack |
+| **fess-ds-atlassian** | main | Confluence / Jira |
+| **fess-ds-box** | main | Box |
+| **fess-ds-csv** | main | CSV files |
+| **fess-ds-db** | main | Relational databases via JDBC |
+| **fess-ds-dropbox** | main | Dropbox |
+| **fess-ds-git** | main | Git repositories |
+| **fess-ds-gsuite** | main | Google Workspace |
+| **fess-ds-json** | main | JSON files |
+| **fess-ds-microsoft365** | main | Microsoft 365 (OneDrive, Teams, SharePoint, …) |
+| **fess-ds-salesforce** | main | Salesforce |
+| **fess-ds-sharepoint** | main | On-premise SharePoint |
+| **fess-ds-slack** | main | Slack |
 | **fess-ds-wikipedia** | main | Wikipedia dumps |
-| **fess-ds-example** | master | Template for new data store plugins |
+| **fess-ds-example** | main | Template for new data store plugins |
 
 #### LLM Plugins (`build_order` 10)
 
@@ -147,7 +147,7 @@ client through `crawlerClientCreator`; that client class itself stays in `fess-c
 | **fess-webapp-v1-api** | main | v1 REST API |
 | **fess-webapp-mcp** | main | Model Context Protocol server |
 | **fess-webapp-multimodal** | main | CLIP-based multimodal (image) search |
-| **fess-webapp-example** | master | Template for new webapp plugins |
+| **fess-webapp-example** | main | Template for new webapp plugins |
 | **fess-thumbnail-playwright** | main | Playwright-based thumbnail generation |
 | **fess-script-groovy** | main | Groovy script engine |
 | **fess-script-ognl** | main | OGNL script engine |
@@ -158,7 +158,7 @@ client through `crawlerClientCreator`; that client class itself stays in `fess-c
 
 | Repository | Branch | Description |
 |------------|--------|-------------|
-| **fess-theme-simple** | master | Simple UI theme (Maven plugin) |
+| **fess-theme-simple** | main | Simple UI theme (Maven plugin) |
 | **fess-themes** | main | Static theme collection (`skip_build`) |
 
 #### Tools and Infrastructure
@@ -166,11 +166,11 @@ client through `crawlerClientCreator`; that client class itself stays in `fess-c
 | Repository | Branch | Order | Description |
 |------------|--------|-------|-------------|
 | **fess-kopf** | main | 20 | OpenSearch admin UI (Vue 3 / Vite) |
-| **docker-fess** | master | 30 | Official Docker images and Compose files |
+| **docker-fess** | main | 30 | Official Docker images and Compose files |
 | **fessctl** | main | 40 | Python CLI for the Fess Admin API |
 | **fess-test-ui** | main | 99 | Playwright/Python UI test suite (`skip_build`) |
 | **homebrew-tap** | main | 99 | Homebrew tap for CodeLibs tools (`skip_build`) |
-| **fess-docs** | master | 99 | Documentation sources (`skip_build`) |
+| **fess-docs** | main | 99 | Documentation sources (`skip_build`) |
 
 `build.sh` only runs Maven. Repositories without a `pom.xml` — `fess-kopf`, `docker-fess`,
 `fessctl`, plus the four `skip_build` entries — are reported as skipped and must be built with their
@@ -307,7 +307,7 @@ description: "Custom development set"
 defaults:
   remote_base: https://github.com/codelibs
   remote_base_ssh: git@github.com:codelibs
-  branch: master
+  branch: main
 
 # Optional: pull in another set
 includes:
@@ -319,7 +319,7 @@ repositories:
 
   # Per-repository branch override
   - name: fess-webapp-mcp
-    branch: main
+    branch: feature/my-feature
     build_order: 10
 
   # Fork or arbitrary remote
@@ -345,8 +345,9 @@ de-duplicated before sorting by `build_order`.
 
 ## Gotchas
 
-- **The default branch is `master`**, not `main`. `main` is a per-repository override — see the
-  branch columns above. `repos/fess` has no `main` branch at all.
+- **The default branch is `main` for every repository.** `master` was renamed to `main` across
+  the workspace, so no per-repository override is needed — see the branch columns above. Each
+  renamed repository keeps its pre-rename tip on an `old_master` branch.
 - `repos/`, `logs/`, `work/`, `docs/` and `target/` are gitignored local scratch, not workspace
   source. Do not `git add` them.
 - `repos/` may contain checkouts that are no longer listed in any set — after a repository is

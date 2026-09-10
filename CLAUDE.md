@@ -75,10 +75,9 @@ docker-fess -> fessctl -> fess-test-ui, fess-docs
 
 ## Gotchas
 
-- **Default branch is `master`**, not `main` (`defaults.branch` in `sets/*.yaml`). `main` is a
-  per-repo override - incl. fess-parent, fess-themes, java-saml, jcifs, fesen-httpclient,
-  fess-crawler-playwright, and every `fess-sso-*` / `fess-storage-*`. `repos/fess` has no `main`
-  branch at all.
+- **Default branch is `main` for every repository** (`defaults.branch` in `sets/*.yaml`); there
+  are no per-repo overrides left. `master` was renamed to `main` across the workspace; each
+  renamed repository keeps its pre-rename tip as `old_master`.
 - `FESS_WORKSPACE_GIT_SSH=true` switches clone/sync remotes from HTTPS to SSH.
 - `build.sh` writes `logs/build/<repo>.log`; without `--verbose` Maven output goes only there.
   Check that file first when a build fails.
