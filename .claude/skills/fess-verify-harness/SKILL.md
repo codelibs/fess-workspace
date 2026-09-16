@@ -26,7 +26,7 @@ workspace repo is public. Keep code in `docs/`, keep procedure here.
 | `entraid-verify/` | EntraID against a live Azure tenant | `scripts/azure-setup-r5.sh`, `RETEST.md` |
 | `llm-openai-158/`, `llm-ollama-r4/`, `llm-gemini-158/` | LLM plugin: embeddings, RAG, prompt bases, wire format | `up.sh`, `configure.sh`/`mkconf.sh`, `verify_*.py` |
 | `embedding-quality/` | Embedding scoring correctness, independent of Fess | `offline_cos.py`, `minscore_test.py`, `degrade_test.py` |
-| `mcp-verify/` | MCP plugin over a real MCP client | `start.sh`, `phase*.sh` |
+| `mcp-verify/` | MCP plugin: protocol conformance against the final spec text, tools, fess_token and Keycloak OAuth, rate limiting, partial-result flags, packaging on the target Fess, the official SDKs, and a live Claude Code agent | `build.sh`, `setup.sh`, `run-regression.sh` |
 | `playwright-crawl-test/` | Playwright crawler: JS rendering, auth, proxy | `scripts/run-all.sh` |
 | `ognl-verify/` | fess-script-ognl: DI registration, expression semantics, strict-mode sandbox, config clamps, crawler field scripts | `run-all.sh` |
 | `wikipedia-verify/` | fess-ds-wikipedia: DI registration, 6 dump compressions, CirrusSearch NDJSON, directory expansion, the download User-Agent, `limit` and error routing, search reachability | `run-all.sh` |
@@ -96,9 +96,17 @@ workspace repo is public. Keep code in `docs/`, keep procedure here.
   equals `(1 + maxcos) / 2`. That is an independent falsification of the scoring path, not a smoke
   test. `make_docs.py` builds a corpus whose answer passage sits in a late chunk with vocabulary
   disjoint from the query, so BM25 scores zero and only the vector path can succeed.
-- **MCP** — `client/fess-mcp-bridge.mjs` is not replaceable. The MCP SDK's newest protocol version
-  opens every session with `initialize`, which the Fess endpoint removed; the bridge speaks
-  2025-06-18 to the client and 2026-07-28 to Fess. Without it no real MCP client can reach Fess.
+- **MCP** — real clients now reach the 2026-07-28 endpoint directly: Claude Code (verified on
+  2.1.273, configured as `{"type": "http", "url": ...}`), the Python SDK 2.x, and the TypeScript SDK v2
+  (`@modelcontextprotocol/client`) **only with `versionNegotiation` set to `auto` or a pin** — its default
+  `legacy` mode still opens with `initialize` and fails. `client/fess-mcp-bridge.mjs` is needed only for
+  clients built on `@modelcontextprotocol/sdk` 1.x. Every suite rewrites `system.properties`, so run them
+  one after another (`run-regression.sh`), never in parallel. Wait for the Default Crawler job to finish
+  before starting the suggest indexer — the document count reaches its target first, and an index built in
+  that window silently lacks terms — and wait on Fess core's own `/api/v2/suggest-words`, never on the MCP
+  tool under test. `phase13.sh` takes its expected values from the specification text, so a FAIL there is a
+  discrepancy to triage, not a regression. The scripts hold absolute paths to the directory they last ran
+  in; rewrite them when reviving.
 - **OGNL** — the plugin installs to `app/WEB-INF/plugin/`, not `WEB-INF/lib/`. Fess core rewrote the
   script subsystem on 2026-08-29, so re-derive which call sites accept `ognl` from core rather than
   from notes. Two silent traps: the admin REST API maps JSON in **snake_case**, and crawler field
