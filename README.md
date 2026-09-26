@@ -40,7 +40,7 @@ Cloning defaults to HTTPS. Export `FESS_WORKSPACE_GIT_SSH=true` to use SSH remot
 ```
 fess-workspace/
 ├── sets/                     # Repository set definitions
-│   ├── all.yaml             # Complete ecosystem (54 repositories)
+│   ├── all.yaml             # Complete ecosystem (55 repositories)
 │   ├── core.yaml            # Core components only
 │   ├── plugins.yaml         # core.yaml + data store / theme plugins
 │   └── custom.yaml.example  # Template for custom sets
@@ -147,6 +147,7 @@ client through `crawlerClientCreator`; that client class itself stays in `fess-c
 | **fess-webapp-v1-api** | main | v1 REST API |
 | **fess-webapp-mcp** | main | Model Context Protocol server |
 | **fess-webapp-multimodal** | main | CLIP-based multimodal (image) search |
+| **fess-webapp-bangs** | main | DuckDuckGo-style `!bang` redirects to external search sites |
 | **fess-webapp-example** | main | Template for new webapp plugins |
 | **fess-thumbnail-playwright** | main | Playwright-based thumbnail generation |
 | **fess-script-groovy** | main | Groovy script engine |
