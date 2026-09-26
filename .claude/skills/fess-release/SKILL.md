@@ -1,6 +1,6 @@
 ---
 name: fess-release
-description: Use when generating Fess GitHub release notes from a milestone.
+description: Builds categorized Fess release notes from a GitHub milestone and creates a draft GitHub release. Use when generating Fess GitHub release notes from a milestone.
 ---
 
 # Fess Release Notes Generator
@@ -171,14 +171,14 @@ After creating the draft, provide the user with:
 
 ### Step 10: Post-publication site check
 
-Once the documentation for the new version is published, run `docs/site-noindex/verify.sh` and add
-the new version to the list it checks. It asserts the publication matrix — which paths must stay
-indexable and which must carry `noindex` — and the version list does not update itself, so a new
-release silently goes unchecked until it is added.
+Once the documentation and API docs for the new version are published, check the site's indexing
+invariants for the new version by hand — nothing adds a new release to an existing check automatically:
 
-`docs/site-noindex/` is a standalone git repository with no remote: it exists only in this
-workspace and `docs/` is gitignored, so it is never restored by a clone. Its test suite must run
-in the Debian container `run-tests.sh` starts; BSD `sed` on macOS cannot execute it.
+- The new version's documentation pages are indexable and self-canonical.
+- Older versions' pages whose canonical is missing or points at themselves carry
+  `<meta name="robots" content="noindex,follow">`.
+- Of the Javadoc/xref trees, only the root `apidocs/` and `lastadoc-fess.html` stay indexable; every
+  versioned, `/snapshot/` and root `/xref/` page carries `noindex`.
 
 ## Error Handling
 

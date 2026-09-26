@@ -1,6 +1,6 @@
 ---
 name: fess-tech-doc
-description: Use when writing or planning Fess technical articles under repos/fess-docs/ja/articles/.
+description: Plans and writes Fess technical articles in RST following the fess-docs conventions. Use when writing or planning Fess technical articles under repos/fess-docs/ja/articles/.
 ---
 
 # Fess Technical Article Writing

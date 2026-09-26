@@ -1,6 +1,6 @@
 ---
 name: fess-i18n
-description: Use when editing Fess i18n messages in fess_label*.properties or fess_message*.properties.
+description: Adds and synchronizes Fess message and label keys across all locale property files. Use when editing Fess i18n messages in fess_label*.properties or fess_message*.properties.
 ---
 
 # Fess Internationalization (i18n) Manager

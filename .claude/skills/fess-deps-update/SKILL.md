@@ -1,6 +1,6 @@
 ---
 name: fess-deps-update
-description: Use when updating dependency versions in fess-parent/pom.xml.
+description: Finds newer stable versions of dependencies managed in fess-parent/pom.xml, applies them, and verifies the shipped jars. Use when updating dependency versions in fess-parent/pom.xml.
 ---
 
 # Fess Dependency Update Skill
@@ -125,8 +125,8 @@ If the entries differ, sync by extracting the new upstream file and re-applying 
 deltas above, then diff the result against the old copy to confirm only the intended
 upstream changes came in. If they match, state that no companion change is required.
 
-Observed digests (2026-08): 3.2.3 `e3f15ef4`, 3.3.0 `f3d9d395`, 3.3.1 `b213c351`,
-3.3.2 `b213c351` — i.e. 3.3.1 -> 3.3.2 needed no sync, but the two bumps before it did.
+Some bumps need no sync and some do; decide each one from the digests, never from the size of
+the version jump.
 
 ### Jakarta Mail Constraint
 
@@ -197,9 +197,8 @@ curl -s https://repo1.maven.org/maven2/<GROUP/AS/PATH>/<ARTIFACT>/maven-metadata
 ```
 
 **Do not use `https://search.maven.org/solrsearch/select`.** Its index is stale and
-returns versions *older than what the POM already carries* — measured 2026-08, it
-reported guava 33.4.8-jre (POM had 33.6.0-jre), OpenSearch 3.7.0 (actual 3.8.0),
-icu4j 77.1 (POM had 78.3), and tomcat 10.1.55 while ignoring the 11.x line. Trusting it
+can return versions *older than what the POM already carries* and miss whole release
+lines. Trusting it
 produces false "already latest" verdicts and downgrade proposals. Its `latestVersion`
 field and `core=gav` ordering are equally unreliable.
 
@@ -212,9 +211,8 @@ name a SNAPSHOT or milestone.
 
 Filtering caveats:
 - Classifier-style suffixes are not pre-releases: keep `-jre`, drop `-android` for guava.
-- An over-broad `-m\d` rule eats legitimate values — `commons-fileupload2` currently has
-  *only* milestones published (`2.0.0-M5` is the newest), so filtering everything out
-  leaves an empty list, not "no update".
+- An over-broad `-m\d` rule eats legitimate values — some artifacts publish *only*
+  milestones, so filtering everything out leaves an empty list, not "no update".
 - Some artifacts are not on Central at all (`jp.gr.java_conf.dangan:jlha`) and return 404.
   Treat a fetch error as unknown, never as "already latest".
 
@@ -318,10 +316,10 @@ Present a final summary showing:
 2. **Check transitive dependency conflicts** - A library update may pull in incompatible transitive dependencies.
 3. **groupId changes** - Some libraries change groupId between major versions (e.g., `javax.*` -> `jakarta.*`, `com.sun.mail` -> `org.eclipse.angus`).
 4. **Plugin vs library versions** - Maven plugins are in `<pluginManagement>`, not `<properties>`. Update both sections.
-5. **A property bump can be a no-op** - Consumers sometimes hardcode a version instead of using `${xxx.version}`, and Maven's nearest-wins mediation lets that hardcoded *direct* dependency beat the property-driven *transitive* one. The build stays green while the shipped version never changes. Known case: `fess/pom.xml` pins `org.commonmark:commonmark` and `commonmark-ext-gfm-tables` to `0.24.0` while `fess-crawler` uses `${commonmark.version}`, so the WAR ships a split. Always confirm against `WEB-INF/lib` (Step 7).
+5. **A property bump can be a no-op** - Consumers sometimes hardcode a version instead of using `${xxx.version}`, and Maven's nearest-wins mediation lets that hardcoded *direct* dependency beat the property-driven *transitive* one. The build stays green while the shipped version never changes. Grep every consumer POM for a literal version of the artifact, and always confirm against `WEB-INF/lib` (Step 7).
 6. **Deliberate pins carry comments** - `maven-source-plugin` is held at 3.2.1 with an inline reference to MSOURCES-143. Read the surrounding comment before bumping anything that looks outdated.
 7. **Resource files can be part of a dependency bump** - `tika.version` has a companion resource in `fess-crawler` (see the Tika section). A version property is not always the whole change.
-8. **Constrained does not mean "already correct"** - Check whether the POM is ahead *or behind* the constraint. `asm` was found 9.9.1 against OpenSearch's and Tika's 9.10.1.
+8. **Constrained does not mean "already correct"** - Check whether the POM is ahead *or behind* the constraint. A pinned transitive such as `asm` can fall behind what OpenSearch and Tika require.
 9. **Beware vacuous comparisons** - When diffing upstream files across versions, print a digest of the container (jar) too. Two failed downloads produce two empty files and a confident false "identical".
 
 ## Error Handling

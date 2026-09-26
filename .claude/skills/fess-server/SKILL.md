@@ -1,6 +1,6 @@
 ---
 name: fess-server
-description: Use when building, starting, stopping, or checking the local Fess server.
+description: Builds, starts, stops and checks a local Fess server from repos/fess. Use when building, starting, stopping, or checking the local Fess server.
 ---
 
 # Fess Server Management
