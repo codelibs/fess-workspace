@@ -1,6 +1,6 @@
 ---
 name: fess-test
-description: Use when writing unit or integration tests for Fess components.
+description: Writes unit and integration tests that follow Fess test base classes and conventions. Use when writing unit or integration tests for Fess components.
 context: fork
 ---
 

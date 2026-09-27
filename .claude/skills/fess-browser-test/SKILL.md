@@ -1,18 +1,18 @@
 ---
 name: fess-browser-test
-description: Use when running browser-based UI tests for Fess.
+description: Runs browser-based UI test scenarios against a local Fess search page and admin console. Use when running browser-based UI tests for Fess.
 ---
 
 # Fess Browser Test Framework
 
-This skill provides a framework for browser-based UI testing of Fess using the `agent-browser` skill.
+This skill provides a framework for browser-based UI testing of Fess using whatever browser-automation tool the session provides (for example a Chrome extension, Playwright MCP, or a browser-automation skill).
 
 ## Prerequisites
 
 Before running browser tests, ensure:
 
 1. **Fess server is running** - Use `/fess-server status` to verify
-2. **agent-browser skill is available** - Required for browser automation
+2. **A browser-automation tool is available** - This skill does not ship one
 
 ### Pre-flight Check
 
@@ -49,7 +49,7 @@ echo "Fess is ready for browser testing at http://localhost:${FESS_PORT}/"
         ↓
 2. Define test scenario
         ↓
-3. Invoke agent-browser skill
+3. Open the browser-automation tool
         ↓
 4. Execute browser actions
         ↓
@@ -60,15 +60,10 @@ echo "Fess is ready for browser testing at http://localhost:${FESS_PORT}/"
 
 ---
 
-## Using agent-browser
+## Driving the browser
 
-The `agent-browser` skill provides browser automation capabilities. Invoke it using:
-
-```
-/agent-browser
-```
-
-Then provide instructions for the specific test scenario.
+Use the browser-automation tool available in the session (load it first if it is deferred), then
+provide instructions for the specific test scenario.
 
 ---
 
@@ -204,7 +199,7 @@ When requesting a browser test, provide:
 
 ### Browser Not Launching
 
-- Ensure agent-browser skill is properly installed
+- Ensure the browser-automation tool is installed and connected
 - Check for conflicting browser processes
 
 ### Page Not Loading

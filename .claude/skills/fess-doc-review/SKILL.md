@@ -1,6 +1,6 @@
 ---
 name: fess-doc-review
-description: Use when reviewing Fess RST documentation against source code for technical accuracy.
+description: Checks Fess RST documentation claims against the source code and reports incorrect or unverifiable statements. Use when reviewing Fess RST documentation against source code for technical accuracy.
 ---
 
 # Fess Documentation Review

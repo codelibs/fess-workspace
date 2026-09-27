@@ -1,6 +1,6 @@
 ---
 name: fess-config
-description: Use when editing Fess configuration in fess_config.properties or system settings.
+description: Explains where Fess settings live and how fess_config.properties, system properties and admin settings interact. Use when editing Fess configuration in fess_config.properties or system settings.
 ---
 
 # Fess Configuration Manager
@@ -129,7 +129,7 @@ Create environment-specific files:
 
 ```properties
 # fess_env_production.properties
-opensearch.hosts=es-cluster.internal:9200
+opensearch.hosts=opensearch.example.com:9200
 log.level.app=WARN
 
 # fess_env_development.properties
