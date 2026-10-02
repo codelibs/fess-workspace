@@ -88,7 +88,7 @@ Detailed verification rules for config properties, defaults, permissions, ports,
 
 ## A2. Crawler Config Parameters (`client.*`)
 
-- Docs describing the "設定パラ���ーター" (Config Parameters) field in crawl config forms use `client.*` prefixed parameters. These are stripped of the `client.` prefix by `ParameterUtil.createConfigParameterMap()` and passed to the crawler client's init parameters.
+- Docs describing the "設定パラメーター" (Config Parameters) field in crawl config forms use `client.*` prefixed parameters. These are stripped of the `client.` prefix by `ParameterUtil.createConfigParameterMap()` and passed to the crawler client's init parameters.
 - Every `client.*` parameter in docs must exist in one of:
   1. `CrawlingConfig.Param.Client` constants (`repos/fess/src/main/java/org/codelibs/fess/opensearch/config/exentity/CrawlingConfig.java`) — Fess-level parameters
   2. `HcHttpClient` property constants (`repos/fess-crawler/fess-crawler/src/main/java/org/codelibs/fess/crawler/client/http/HcHttpClient.java`) — crawler client parameters
