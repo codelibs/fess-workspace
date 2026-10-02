@@ -22,7 +22,7 @@ branch instead.
 | LLM/RAG chat (session/history) | `repos/fess/src/main/java/org/codelibs/fess/chat/ChatClient.java`, `ChatSessionManager.java` |
 | LLM/RAG chat (phases) | `repos/fess/src/main/java/org/codelibs/fess/chat/ChatPhaseCallback.java` (phase constant definitions) |
 | LLM/RAG chat (API) | `repos/fess/src/main/java/org/codelibs/fess/api/chat/ChatApiManager.java` |
-| LLM providers | `repos/fess-llm-ollama/`, `repos/fess-llm-openai/`, `repos/fess-llm-gemini/` |
+| LLM providers | `repos/fess-llm-ollama/`, `repos/fess-llm-openai/`, `repos/fess-llm-gemini/`, `repos/fess-llm-bedrock/` |
 | LLM prompt types (authoritative list) | Each plugin's `*LlmClient.applyDefaultParams()` switch statement — enumerates all supported prompt types with hardcoded defaults for temperature, max.tokens, thinking.budget |
 | LLM plugin configurable properties | Each plugin's `*LlmClient` class — scan all `getConfigInt()`, `getConfigLong()`, and `getOrDefault(getConfigPrefix() + ".*")` calls to find every configurable property key and its default value. Also check `AbstractLlmClient` for inherited properties (e.g., `max.concurrent.requests`, `concurrency.wait.timeout`) |
 | Crawling | `repos/fess/src/main/java/org/codelibs/fess/crawler/`, `repos/fess-crawler/` |

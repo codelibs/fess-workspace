@@ -150,6 +150,9 @@ repositories:
   - name: fess-llm-gemini
     build_order: 10
 
+  - name: fess-llm-bedrock
+    build_order: 10
+
   - name: fess-webapp-multimodal
     build_order: 10
 
