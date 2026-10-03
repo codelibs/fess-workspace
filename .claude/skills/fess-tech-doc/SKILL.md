@@ -18,7 +18,7 @@ Understand the Fess features to cover by reading source code — never write abo
 - API endpoints: `repos/fess/src/main/java/org/codelibs/fess/app/web/api/` — REST API implementations
 - Crawler: `repos/fess-crawler/` — crawling behavior, supported protocols
 - Data store plugins: `repos/fess-ds-*/` — each repo = one data source connector
-- LLM plugins: `repos/fess-llm-*/` — RAG/AI integration (OpenAI, Gemini, Ollama)
+- LLM plugins: `repos/fess-llm-*/` — RAG/AI integration (OpenAI, Gemini, Ollama, Bedrock)
 - Webapp plugins: `repos/fess-webapp-*/` — web extensions (MCP server, etc.)
 - SSO plugins: `repos/fess-sso-*/` — one authenticator each (`sso.type=saml`, `spnego`, `entraid`, `oic`)
 - Storage plugins: `repos/fess-storage-*/` — object storage clients (`storage.type`, `s3:`/`gcs:` crawling)
@@ -109,7 +109,7 @@ Key areas to draw from when writing articles:
 | Search | Full-text, fuzzy, semantic, vector/KNN, rank fusion, suggest |
 | Access control | Roles, groups, labels, virtual hosts, LDAP, OIDC, SAML, tokens |
 | Search quality | Synonyms, key-match, boost, related queries, stop words, Kuromoji dict |
-| AI/LLM | RAG chat (OpenAI/Gemini/Ollama), MCP server, multimodal (CLIP) |
+| AI/LLM | RAG chat (OpenAI/Gemini/Ollama/Bedrock), MCP server, multimodal (CLIP) |
 | Operations | Scheduler, backup, health API, logs, notifications, multi-instance |
 | Integration | Search API (JSON), admin API, FSS (JS embed), themes, plugins |
 | Infrastructure | Docker Compose, OpenSearch cluster, JVM tuning |

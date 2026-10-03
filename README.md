@@ -40,7 +40,7 @@ Cloning defaults to HTTPS. Export `FESS_WORKSPACE_GIT_SSH=true` to use SSH remot
 ```
 fess-workspace/
 ├── sets/                     # Repository set definitions
-│   ├── all.yaml             # Complete ecosystem (55 repositories)
+│   ├── all.yaml             # Complete ecosystem (56 repositories)
 │   ├── core.yaml            # Core components only
 │   ├── plugins.yaml         # core.yaml + data store / theme plugins
 │   └── custom.yaml.example  # Template for custom sets
@@ -116,6 +116,7 @@ fess-workspace/
 | **fess-llm-ollama** | main | Ollama chat / embedding integration |
 | **fess-llm-openai** | main | OpenAI chat / embedding integration |
 | **fess-llm-gemini** | main | Google Gemini chat / embedding integration |
+| **fess-llm-bedrock** | main | Amazon Bedrock chat / embedding integration |
 
 #### Storage Plugins (`build_order` 10)
 
