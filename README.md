@@ -40,7 +40,7 @@ Cloning defaults to HTTPS. Export `FESS_WORKSPACE_GIT_SSH=true` to use SSH remot
 ```
 fess-workspace/
 ├── sets/                     # Repository set definitions
-│   ├── all.yaml             # Complete ecosystem (56 repositories)
+│   ├── all.yaml             # Complete ecosystem (59 repositories)
 │   ├── core.yaml            # Core components only
 │   ├── plugins.yaml         # core.yaml + data store / theme plugins
 │   └── custom.yaml.example  # Template for custom sets
@@ -95,6 +95,7 @@ fess-workspace/
 | Repository | Branch | Description |
 |------------|--------|-------------|
 | **fess-ds-atlassian** | main | Confluence / Jira |
+| **fess-ds-backlog** | main | Backlog |
 | **fess-ds-box** | main | Box |
 | **fess-ds-csv** | main | CSV files |
 | **fess-ds-db** | main | Relational databases via JDBC |
@@ -103,6 +104,7 @@ fess-workspace/
 | **fess-ds-gsuite** | main | Google Workspace |
 | **fess-ds-json** | main | JSON files |
 | **fess-ds-microsoft365** | main | Microsoft 365 (OneDrive, Teams, SharePoint, …) |
+| **fess-ds-notion** | main | Notion |
 | **fess-ds-salesforce** | main | Salesforce |
 | **fess-ds-sharepoint** | main | On-premise SharePoint |
 | **fess-ds-slack** | main | Slack |
