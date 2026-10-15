@@ -50,6 +50,9 @@ repositories:
   - name: fess-ds-atlassian
     build_order: 10
 
+  - name: fess-ds-backlog
+    build_order: 10
+
   - name: fess-ds-box
     build_order: 10
 
@@ -75,6 +78,9 @@ repositories:
     build_order: 10
 
   - name: fess-ds-microsoft365
+    build_order: 10
+
+  - name: fess-ds-notion
     build_order: 10
 
   - name: fess-ds-salesforce
