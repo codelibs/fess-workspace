@@ -162,6 +162,9 @@ repositories:
   - name: docker-fess
     build_order: 30
 
+  - name: docker-filesearch
+    build_order: 30
+
   - name: fessctl
     build_order: 40
 
