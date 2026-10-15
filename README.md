@@ -169,14 +169,15 @@ client through `crawlerClientCreator`; that client class itself stays in `fess-c
 |------------|--------|-------|-------------|
 | **fess-kopf** | main | 20 | OpenSearch admin UI (Vue 3 / Vite) |
 | **docker-fess** | main | 30 | Official Docker images and Compose files |
+| **docker-filesearch** | main | 30 | Docker Compose environment for Fess with the filesearch static theme and a generated sample file tree |
 | **fessctl** | main | 40 | Python CLI for the Fess Admin API |
 | **fess-test-ui** | main | 99 | Playwright/Python UI test suite (`skip_build`) |
 | **homebrew-tap** | main | 99 | Homebrew tap for CodeLibs tools (`skip_build`) |
 | **fess-docs** | main | 99 | Documentation sources (`skip_build`) |
 
 `build.sh` only runs Maven. Repositories without a `pom.xml` — `fess-kopf`, `docker-fess`,
-`fessctl`, plus the four `skip_build` entries — are reported as skipped and must be built with their
-own toolchain (npm, uv/pip, docker).
+`docker-filesearch`, `fessctl`, plus the four `skip_build` entries — are reported as skipped and
+must be built with their own toolchain (npm, uv/pip, docker).
 
 ### `core.yaml`
 
