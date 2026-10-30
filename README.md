@@ -40,7 +40,7 @@ Cloning defaults to HTTPS. Export `FESS_WORKSPACE_GIT_SSH=true` to use SSH remot
 ```
 fess-workspace/
 ├── sets/                     # Repository set definitions
-│   ├── all.yaml             # Complete ecosystem (59 repositories)
+│   ├── all.yaml             # Complete ecosystem (63 repositories)
 │   ├── core.yaml            # Core components only
 │   ├── plugins.yaml         # core.yaml + data store / theme plugins
 │   └── custom.yaml.example  # Template for custom sets
@@ -179,11 +179,10 @@ client through `crawlerClientCreator`; that client class itself stays in `fess-c
 | **docker-multimodalsearch** | main | 30 | Docker environment for multimodal search on Fess |
 | **fessctl** | main | 40 | Python CLI for the Fess Admin API |
 | **fess-test-ui** | main | 99 | Playwright/Python UI test suite (`skip_build`) |
-| **homebrew-tap** | main | 99 | Homebrew tap for CodeLibs tools (`skip_build`) |
 | **fess-docs** | main | 99 | Documentation sources (`skip_build`) |
 
 `build.sh` only runs Maven. Repositories without a `pom.xml` — `fess-kopf`, `docker-fess`,
-the `docker-*search` environments, `fessctl`, plus the four `skip_build` entries — are reported as
+the `docker-*search` environments, `fessctl`, plus the three `skip_build` entries — are reported as
 skipped and must be built with their own toolchain (npm, uv/pip, docker).
 
 ### `core.yaml`
