@@ -36,7 +36,7 @@
 Build order (`build_order` in `sets/*.yaml`): libs (corelib, curl4j, java-saml, jcifs,
 jhighlight, nekohtml, spnego, fess-parent) -> fesen-httpclient -> fess-crawler ->
 fess-crawler-playwright -> fess-suggest -> fess -> plugins/themes -> fess-kopf ->
-docker-fess -> fessctl -> fess-test-ui, fess-docs
+docker-* -> fessctl -> fess-test-ui, fess-docs
 
 ## Cross-repo Build Tips
 
@@ -90,8 +90,8 @@ docker-fess -> fessctl -> fess-test-ui, fess-docs
 
 Repo naming: `fess` (app), `fess-crawler*` (crawlers), `fess-suggest`, `fess-parent` (dependency
 BOM), `fess-ds-*` (data stores), `fess-llm-*`, `fess-webapp-*` (plugins), `fess-sso-*` (SSO
-authenticators), `fess-storage-*` (object storage clients), `fess-theme*` / `fess-themes` (themes);
-the rest are CodeLibs libraries. A plugin repo's prefix is also its `PluginHelper.ArtifactType`, so
+authenticators), `fess-storage-*` (object storage clients), `fess-theme*` / `fess-themes` (themes),
+`docker-*` (container images); the rest are CodeLibs libraries. A plugin repo's prefix is also its `PluginHelper.ArtifactType`, so
 a new plugin family means a new entry there (`STORAGE` and `SSO` were added in 15.9).
 
 See `sets/*.yaml` for full repository listings (`all.yaml`, `core.yaml`, `plugins.yaml`).
@@ -108,6 +108,14 @@ Non-repo directories:
 - Use LastaFlute patterns (Actions, Forms, Services, Helpers)
 - Use `@Resource` for DI, `ComponentUtil.getXyzHelper()` for helpers
 - Run `mvn formatter:format && mvn license:format` before committing
+
+### Documentation
+- **Upgrade / migration instructions go in `UPGRADING.md` at the repo root, never in `README.md`.**
+  Covers version-to-version steps (config key renames, removed/changed env vars, re-index or
+  re-crawl requirements, migration scripts). `README.md` keeps at most a one-line link to it.
+  Fess docs already call this "upgrade" (`upgrade-guide.rst`), hence `UPGRADING.md`, not `MIGRATION.md`.
+- Procedures that are not tied to a version (e.g. re-crawl after swapping the embedding model) are
+  operational docs and may stay in `README.md` or a topic doc.
 
 ### Scripts
 - Use `set -euo pipefail`
