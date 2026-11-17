@@ -184,7 +184,7 @@ Classify each library into one of these categories:
 | OpenSearch-constrained | Check OpenSearch POM, do not update beyond OpenSearch's version |
 | Tika-constrained | Check Tika parent POM, match Tika's version |
 | CodeLibs-managed | Do not update (managed in separate repos: dbflute, lastaflute, lasta.di, etc.) |
-| CodeLibs custom repo | Do not update (jcifs, java-saml, nekohtml, corelib, curl4j) |
+| CodeLibs custom repo | Do not update (jcifs, saml4j, nekohtml, corelib, curl4j) |
 | Freely updatable | Check Maven Central for latest stable version |
 
 ### Step 3: Check Latest Versions on Maven Central

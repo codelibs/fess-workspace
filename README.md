@@ -73,10 +73,10 @@ fess-workspace/
 |------------|--------|-------------|
 | **corelib** | main | Core utility library |
 | **curl4j** | main | cURL-like Java HTTP client |
-| **java-saml** | main | Java SAML toolkit (SSO) |
 | **jcifs** | main | CIFS/SMB client library in pure Java |
 | **jhighlight** | main | Source code syntax highlighter |
 | **nekohtml** | main | HTML parser and tag balancer |
+| **saml4j** | main | SAML 2.0 service provider library (SSO) |
 | **spnego** | main | Integrated Windows Authentication (SSO) |
 | **fess-parent** | main | Maven parent POM / dependency management |
 | **fesen-httpclient** | main | HTTP client for OpenSearch |
@@ -284,8 +284,8 @@ Every script also accepts `--help` / `-h`.
 
 ## Build Notes
 
-Build order: libraries (`corelib`, `curl4j`, `java-saml`, `jcifs`, `jhighlight`, `nekohtml`,
-`spnego`, `fess-parent`) → `fesen-httpclient` → `fess-crawler` → `fess-crawler-playwright` →
+Build order: libraries (`corelib`, `curl4j`, `jcifs`, `jhighlight`, `nekohtml`,
+`saml4j`, `spnego`, `fess-parent`) → `fesen-httpclient` → `fess-crawler` → `fess-crawler-playwright` →
 `fess-suggest` → `fess` → plugins and themes → `fess-kopf` → `docker-fess` → `fessctl` →
 `fess-test-ui` / `fess-docs`.
 

@@ -35,7 +35,7 @@ After opening the PRs for a wave, tell the user which PRs are open, then **wait*
 
 ## Step 0: Scope & validation
 
-1. Read `sets/all.yaml` to get the full list of tracked repositories and their default branches. Non-Fess repos (`corelib`, `curl4j`, `fesen-httpclient`, `java-saml`, `jcifs`, `jhighlight`, `nekohtml`, `spnego`) and docs/site-only repos (`docker-fess`, `fessctl`, `fess-kopf`, `fess-test-ui`, `fess-docs`) are out of scope — they follow their own release cadences.
+1. Read `sets/all.yaml` to get the full list of tracked repositories and their default branches. Non-Fess repos (`corelib`, `curl4j`, `fesen-httpclient`, `jcifs`, `jhighlight`, `nekohtml`, `saml4j`, `spnego`) and docs/site-only repos (`docker-fess`, `fessctl`, `fess-kopf`, `fess-test-ui`, `fess-docs`) are out of scope — they follow their own release cadences.
 2. Run `./scripts/status.sh --short` and verify every target repo is on its default branch with a clean tree. Dirty trees abort the workflow unless the user explicitly says to proceed; log them and ask.
 3. Confirm the current project version of each target matches `${OLD_MAJOR_MINOR}.x-SNAPSHOT`. A small number of orphan repos may sit a patch behind (e.g. on `15.6.0-SNAPSHOT` while the rest are on `15.6.1-SNAPSHOT`) — they merge into `NEW_VERSION` here too, so include them.
 4. Check `git ls-remote --heads origin ${RELEASE_BRANCH}` per repo. If it already exists, skip branch creation for that repo (do not attempt to recreate).
