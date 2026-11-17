@@ -32,8 +32,8 @@ require_workspace() {
 # listed in sets/all.yaml that has a pom.xml on disk.
 #
 # Excludes repos whose version is maintained independently of the main Fess
-# release cadence (corelib, curl4j, fesen-httpclient, java-saml, jcifs,
-# jhighlight, nekohtml, spnego) and docs-only / site-only repos.
+# release cadence (corelib, curl4j, fesen-httpclient, jcifs,
+# jhighlight, nekohtml, saml4j, spnego) and docs-only / site-only repos.
 
 list_target_repos() {
   local ws="$1"
@@ -49,7 +49,7 @@ list_target_repos() {
   ' "${set_file}" |
   while IFS=$'\t' read -r name branch; do
     case "${name}" in
-      corelib|curl4j|fesen-httpclient|java-saml|jcifs|jhighlight|nekohtml|spnego) continue ;;
+      corelib|curl4j|fesen-httpclient|jcifs|jhighlight|nekohtml|saml4j|spnego) continue ;;
       docker-fess|fessctl|fess-kopf|fess-test-ui|fess-docs) continue ;;
     esac
     if [[ -f "${ws}/repos/${name}/pom.xml" ]]; then

@@ -17,9 +17,6 @@ repositories:
   - name: fesen-httpclient
     build_order: 2
 
-  - name: java-saml
-    build_order: 1
-
   - name: jcifs
     build_order: 1
 
@@ -27,6 +24,9 @@ repositories:
     build_order: 1
 
   - name: nekohtml
+    build_order: 1
+
+  - name: saml4j
     build_order: 1
 
   - name: spnego

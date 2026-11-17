@@ -33,8 +33,8 @@
 ./scripts/release-branch.sh        # Create/manage release branches across repos
 ```
 
-Build order (`build_order` in `sets/*.yaml`): libs (corelib, curl4j, java-saml, jcifs,
-jhighlight, nekohtml, spnego, fess-parent) -> fesen-httpclient -> fess-crawler ->
+Build order (`build_order` in `sets/*.yaml`): libs (corelib, curl4j, jcifs,
+jhighlight, nekohtml, saml4j, spnego, fess-parent) -> fesen-httpclient -> fess-crawler ->
 fess-crawler-playwright -> fess-suggest -> fess -> plugins/themes -> fess-kopf ->
 docker-* -> fessctl -> fess-test-ui, fess-docs
 
