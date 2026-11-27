@@ -192,7 +192,7 @@ Minimal set for core development: `fess-parent`, `fess-crawler`, `fess-crawler-p
 
 ### `plugins.yaml`
 
-`includes: core.yaml` plus data store connectors (`fess-ds-db`, `-csv`, `-json`, `-office365`,
+`includes: core.yaml` plus data store connectors (`fess-ds-db`, `-csv`, `-json`,
 `-salesforce`, `-slack`, `-box`, `-dropbox`, `-s3`, `-gsuite`, `-atlassian`, `-gitbucket`, `-git`)
 and `fess-theme-simple`. It covers data stores only — the LLM, webapp, script, storage and SSO
 plugins are in `all.yaml`.
@@ -362,7 +362,7 @@ de-duplicated before sorting by `build_order`.
 - `repos/` may contain checkouts that are no longer listed in any set — after a repository is
   dropped from `sets/*.yaml`, its clone stays behind. The scripts skip such directories
   silently, so they never sync or build; remove them by hand.
-- `plugins.yaml` still lists `fess-ds-office365`, `fess-ds-s3` and `fess-ds-gitbucket`, which are not
+- `plugins.yaml` still lists `fess-ds-s3` and `fess-ds-gitbucket`, which are not
   part of `all.yaml`; clone them only if those upstream repositories still exist.
 
 ## AI-Assisted Development

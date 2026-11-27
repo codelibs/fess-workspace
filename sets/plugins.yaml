@@ -21,9 +21,6 @@ repositories:
   - name: fess-ds-json
     build_order: 10
 
-  - name: fess-ds-office365
-    build_order: 10
-
   - name: fess-ds-salesforce
     build_order: 10
 
